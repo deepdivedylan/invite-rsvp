@@ -306,4 +306,14 @@ class Rsvp implements \JsonSerializable {
 		}
 		$this->rsvpTimestamp = $newRsvpTimestamp;
 	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
+	}
 }
