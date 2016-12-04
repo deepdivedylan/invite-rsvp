@@ -50,8 +50,43 @@ class Rsvp implements \JsonSerializable {
 	 **/
 	private $rsvpTimestamp;
 
+	/**
+	 * constructor for this rsvp
+	 *
+	 * @param int|null $newRsvpId id of this rsvp or null if a new rsvp
+	 * @param string $newRsvpInviteeId invitee id of this rsvp
+	 * @param string|null $newRsvpBrowser browser of this rsvp
+	 * @param string $newRsvpComment comment for this rsvp
+	 * @param string|null $newRsvpIpAddress IP address of this rsvp
+	 * @param string $newRsvpNumPeople number of people for this rsvp
+	 * @param string $newRsvpTimestamp timestamp of this rsvp
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 **/
 	public function __construct(int $newRsvpId = null, int $newRsvpInviteeId, string $newRsvpBrowser, string $newRsvpComment = null, string $newRsvpIpAddress, int $newRsvpNumPeople, $newRsvpTimestamp) {
-
+		try {
+			$this->setRsvpId($newRsvpId);
+			$this->setRsvpInviteeId($newRsvpInviteeId);
+			$this->setRsvpBrowser($newRsvpBrowser);
+			$this->setRsvpComment($newRsvpComment);
+			$this->setRsvpIpAddress($newRsvpIpAddress);
+			$this->setRsvpNumPeople($newRsvpNumPeople);
+			$this->setRsvpTimestamp($newRsvpTimestamp);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			// rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
 	}
 
 	/**
