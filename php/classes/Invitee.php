@@ -445,6 +445,75 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this Invitee into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) {
+		// enforce the inviteeId is null (i.e., don't insert a invitee that already exists)
+		if($this->inviteeId !== null) {
+			throw(new \PDOException("not a new invitee"));
+		}
+
+		// create query template
+		$query = "INSERT INTO invitee(inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip) VALUES(:inviteeCity, :inviteeEmail, :inviteeName, :inviteePhone, :inviteeState, :inviteeStreet1, :inviteeStreet2, :inviteeToken, :inviteeZip)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["inviteeCity" => $this->inviteeCity, "inviteeEmail" => $this->inviteeEmail, "inviteeName" => $this->inviteeName, "inviteePhone" => $this->inviteePhone, "inviteeState" => $this->inviteeState, "inviteeStreet1" => $this->inviteeStreet1, "inviteeStreet2" => $this->inviteeStreet2, "inviteeToken" => $this->inviteeToken, "inviteeZip" => $this->inviteeZip];
+		$statement->execute($parameters);
+
+		// update the null inviteeId with what mySQL just gave us
+		$this->inviteeId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * deletes this Invitee from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) {
+		// enforce the inviteeId is null (i.e., don't delete a invitee that hasn't been inserted)
+		if($this->inviteeId === null) {
+			throw(new \PDOException("unable to delete a invitee that does not exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM invitee WHERE inviteeId = :inviteeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["inviteeId" => $this->inviteeId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Invitee in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) {
+		// enforce the inviteeId is null (i.e., don't update a invitee that hasn't been inserted)
+		if($this->inviteeId === null) {
+			throw(new \PDOException("unable to update a invitee that does not exist"));
+		}
+
+		// create query template
+		$query = "UPDATE invitee SET inviteeCity = :inviteeCity, inviteeEmail = :inviteeEmail, inviteeName = :inviteeName, inviteePhone = :inviteePhone, inviteeState = :inviteeState, inviteeStreet1 = :inviteeStreet1, inviteeStreet2 = :inviteeStreet2, inviteeToken = :inviteeToken, inviteeZip WHERE inviteeId = :inviteeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["inviteeCity" => $this->inviteeCity, "inviteeEmail" => $this->inviteeEmail, "inviteeName" => $this->inviteeName, "inviteePhone" => $this->inviteePhone, "inviteeState" => $this->inviteeState, "inviteeStreet1" => $this->inviteeStreet1, "inviteeStreet2" => $this->inviteeStreet2, "inviteeToken" => $this->inviteeToken, "inviteeZip" => $this->inviteeZip, "inviteeId" => $this->inviteeId];
+		$statement->execute($parameters);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
