@@ -129,7 +129,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \RangeException if $newRsvpBrowser is > 128 characters
 	 * @throws \TypeError if $newRsvpBrowser is not a string
 	 **/
-	public function setRsvpComment(string $newRsvpBrowser) {
+	public function setRsvpBrowser(string $newRsvpBrowser) {
 		// verify the rsvp browser is secure
 		$newRsvpBrowser = trim($newRsvpBrowser);
 		$newRsvpBrowser = filter_var($newRsvpBrowser, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
