@@ -143,4 +143,63 @@ class InviteeTest extends InvitersvpTest {
 		$this->assertEquals($pdoInvitee->getInviteeToken(), $this->VALID_INVITEETOKEN);
 		$this->assertEquals($pdoInvitee->getInviteeZip(), $this->VALID_INVITEEZIP);
 	}
+
+	/**
+	 * test inserting a Invitee that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidInvitee() {
+		// create a Tweet with a non null tweet id and watch it fail
+		$invitee = new Invitee(InvitersvpTest::INVALID_KEY, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting an Invitee, editing it, and then updating it
+	 **/
+	public function testUpdateValidInvitee() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("invitee");
+
+		// create a new Invitee and insert to into mySQL
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee->insert($this->getPDO());
+
+		// edit the Invitee and update it in mySQL
+		$invitee->setInviteeCity($this->VALID_INVITEECITY2);
+		$invitee->setInviteeEmail($this->VALID_INVITEEEMAIL2);
+		$invitee->setInviteeName($this->VALID_INVITEENAME2);
+		$invitee->setInviteePhone($this->VALID_INVITEEPHONE2);
+		$invitee->setInviteeState($this->VALID_INVITEESTATE2);
+		$invitee->setInviteeStreet1($this->VALID_INVITEESTREET12);
+		$invitee->setInviteeStreet2($this->VALID_INVITEESTREET22);
+		$invitee->setInviteeToken($this->VALID_INVITEETOKEN2);
+		$invitee->setInviteeZip($this->VALID_INVITEEZIP2);
+		$invitee->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoInvitee = Invitee::getInviteeByInviteeId($this->getPDO(), $invitee->getInviteeId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("invitee"));
+		$this->assertEquals($pdoInvitee->getInviteeCity(), $this->VALID_INVITEECITY2);
+		$this->assertEquals($pdoInvitee->getInviteeEmail(), $this->VALID_INVITEEEMAIL2);
+		$this->assertEquals($pdoInvitee->getInviteeName(), $this->VALID_INVITEENAME2);
+		$this->assertEquals($pdoInvitee->getInviteePhone(), $this->VALID_INVITEEPHONE2);
+		$this->assertEquals($pdoInvitee->getInviteeState(), $this->VALID_INVITEESTATE2);
+		$this->assertEquals($pdoInvitee->getInviteeStreet1(), $this->VALID_INVITEESTREET12);
+		$this->assertEquals($pdoInvitee->getInviteeStreet2(), $this->VALID_INVITEESTREET22);
+		$this->assertEquals($pdoInvitee->getInviteeToken(), $this->VALID_INVITEETOKEN2);
+		$this->assertEquals($pdoInvitee->getInviteeZip(), $this->VALID_INVITEEZIP2);
+	}
+
+	/**
+	 * test updating a Invitee that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidInvitee() {
+		// create a Tweet with a non null tweet id and watch it fail
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee->update($this->getPDO());
+	}
 }
