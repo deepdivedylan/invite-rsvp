@@ -73,12 +73,60 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * mutator method for invitee id
+	 *
+	 * @param int|null $newInviteeId new value of invitee id
+	 * @throws \RangeException if $newInviteeId is not positive
+	 * @throws \TypeError if $newInviteeId is not an integer
+	 **/
+	public function setInviteeId(int $newInviteeId = null) {
+		// base case: if the invitee id is null, this a new invitee without a mySQL assigned id (yet)
+		if($newInviteeId === null) {
+			$this->inviteeId = null;
+			return;
+		}
+
+		// verify the invitee id is positive
+		if($newInviteeId <= 0) {
+			throw(new \RangeException("invitee id is not positive"));
+		}
+
+		// convert and store the invitee id
+		$this->inviteeId = $newInviteeId;
+	}
+
+	/**
 	 * accessor method for invitee city
 	 *
 	 * @return string value of invitee city
 	 **/
 	public function getInviteeCity() {
 		return($this->inviteeCity);
+	}
+
+	/**
+	 * mutator method for invitee city
+	 *
+	 * @param string $newInviteeCity new value of invitee city
+	 * @throws \InvalidArgumentException if $newInviteeCity is not a string or insecure
+	 * @throws \RangeException if $newInviteeCity is > 64 characters
+	 * @throws \TypeError if $newInviteeCity is not a string
+	 **/
+	public function setInviteeCity(string $newInviteeCity) {
+		// verify the invitee city is secure
+		$newInviteeCity = trim($newInviteeCity);
+		$newInviteeCity = filter_var($newInviteeCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newInviteeCity) === true) {
+			throw(new \InvalidArgumentException("invitee city is empty or insecure"));
+		}
+
+		// verify the invitee city will fit in the database
+		if(strlen($newInviteeCity) > 64) {
+			throw(new \RangeException("invitee city too large"));
+		}
+
+		// store the invitee city
+		$this->inviteeCity = $newInviteeCity;
 	}
 
 	/**
@@ -91,12 +139,68 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for invitee city
+	 * mutator method for invitee email
 	 *
-	 * @return string value of invitee city
+	 * @param string|null $newInviteeEmail new value of invitee email
+	 * @throws \InvalidArgumentException if $newInviteeEmail is not a string or insecure
+	 * @throws \RangeException if $newInviteeEmail is > 64 characters
+	 * @throws \TypeError if $newInviteeEmail is not a string
+	 **/
+	public function setInviteeEmail(string $newInviteeEmail = null) {
+		// base case: if the invitee email is null, allow it to be null
+		if($newInviteeEmail = null) {
+			$this->inviteeEmail = null;
+			return;
+		}
+
+		// verify the invitee email is secure
+		$newInviteeEmail = trim($newInviteeEmail);
+		$newInviteeEmail = filter_var($newInviteeEmail, FILTER_SANITIZE_EMAIL);
+		if(empty($newInviteeEmail) === true) {
+			throw(new \InvalidArgumentException("invitee email is empty or insecure"));
+		}
+
+		// verify the invitee email will fit in the database
+		if(strlen($newInviteeEmail) > 64) {
+			throw(new \RangeException("invitee email too large"));
+		}
+
+		// store the invitee email
+		$this->inviteeEmail = $newInviteeEmail;
+	}
+
+	/**
+	 * accessor method for invitee name
+	 *
+	 * @return string value of invitee name
 	 **/
 	public function getInviteeName() {
 		return($this->inviteeName);
+	}
+
+	/**
+	 * mutator method for invitee name
+	 *
+	 * @param string $newInviteeName new value of invitee name
+	 * @throws \InvalidArgumentException if $newInviteeName is not a string or insecure
+	 * @throws \RangeException if $newInviteeName is > 64 characters
+	 * @throws \TypeError if $newInviteeName is not a string
+	 **/
+	public function setInviteeName(string $newInviteeName) {
+		// verify the invitee name is secure
+		$newInviteeName = trim($newInviteeName);
+		$newInviteeName = filter_var($newInviteeName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newInviteeName) === true) {
+			throw(new \InvalidArgumentException("invitee name is empty or insecure"));
+		}
+
+		// verify the invitee name will fit in the database
+		if(strlen($newInviteeName) > 64) {
+			throw(new \RangeException("invitee name too large"));
+		}
+
+		// store the invitee name
+		$this->inviteeName = $newInviteeName;
 	}
 
 	/**
@@ -109,12 +213,54 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * mutator method for invitee phone
+	 *
+	 * @param string|null $newInviteePhone new value of invitee phone
+	 * @throws \InvalidArgumentException if $newInviteePhone is not a string or insecure
+	 * @throws \RangeException if $newInviteePhone is > 24 characters
+	 * @throws \TypeError if $newInviteePhone is not a string
+	 **/
+	public function setInviteePhone(string $newInviteePhone = null) {
+		// base case: if the invitee phone is null, allow it to be null
+		if($newInviteePhone = null) {
+			$this->inviteePhone = null;
+			return;
+		}
+
+		// verify the invitee phone is secure
+		$newInviteePhone = trim($newInviteePhone);
+		$newInviteePhone = filter_var($newInviteePhone, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newInviteePhone) === true) {
+			throw(new \InvalidArgumentException("invitee phone is empty or insecure"));
+		}
+
+		// verify the invitee phone will fit in the database
+		if(strlen($newInviteePhone) > 24) {
+			throw(new \RangeException("invitee phone too large"));
+		}
+
+		// store the invitee phone
+		$this->inviteePhone = $newInviteePhone;
+	}
+
+	/**
 	 * accessor method for invitee state
 	 *
 	 * @return string value of invitee state
 	 **/
 	public function getInviteeState() {
 		return($this->inviteeState);
+	}
+
+	public function setInviteeState(string $newInviteeState) {
+		// verify the invitee state actually exists
+		$states = ["AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FM", "FL", "GA", "GU", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MH", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "MP", "OH", "OK", "OR", "PW", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VI", "VA", "WA", "WV", "WI", "WY"];
+		if(in_array($newInviteeState, $states) === false) {
+			throw(new \InvalidArgumentException("invitee state is invalid"));
+		}
+
+		// store the invitee state
+		$this->inviteeState = $newInviteeState;
 	}
 
 	/**
@@ -127,12 +273,68 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * mutator method for invitee address line 1
+	 *
+	 * @param string $newInviteeStreet1 new value of invitee address line 1
+	 * @throws \InvalidArgumentException if $newInviteeStreet1 is not a string or insecure
+	 * @throws \RangeException if $newInviteeStreet1 is > 64 characters
+	 * @throws \TypeError if $newInviteeStreet1 is not a string
+	 **/
+	public function setInviteeStreet1(string $newInviteeStreet1) {
+		// verify the invitee address line 1 is secure
+		$newInviteeStreet1 = trim($newInviteeStreet1);
+		$newInviteeStreet1 = filter_var($newInviteeStreet1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newInviteeStreet1) === true) {
+			throw(new \InvalidArgumentException("invitee address line 1 is empty or insecure"));
+		}
+
+		// verify the invitee address line 1 will fit in the database
+		if(strlen($newInviteeStreet1) > 64) {
+			throw(new \RangeException("invitee address line 1 too large"));
+		}
+
+		// store the invitee address line 1
+		$this->inviteeStreet1 = $newInviteeStreet1;
+	}
+
+	/**
 	 * accessor method for invitee address street 2
 	 *
 	 * @return string|null value of invitee address line 2
 	 **/
 	public function getInviteeStreet2() {
 		return($this->inviteeStreet2);
+	}
+
+	/**
+	 * mutator method for invitee address line 2
+	 *
+	 * @param string|null $newInviteeStreet2 new value of invitee address line 2
+	 * @throws \InvalidArgumentException if $newInviteeStreet2 is not a string or insecure
+	 * @throws \RangeException if $newInviteeStreet2 is > 64 characters
+	 * @throws \TypeError if $newInviteeStreet2 is not a string
+	 **/
+	public function setInviteeStreet2(string $newInviteeStreet2 = null) {
+		// base case: if the invitee address line 2 is null, allow it to be null
+		if($newInviteeStreet2 = null) {
+			$this->inviteeStreet2 = null;
+			return;
+		}
+
+		// verify the invitee address line 2 is secure
+		$newInviteeStreet2 = trim($newInviteeStreet2);
+		$newInviteeStreet2 = filter_var($newInviteeStreet2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newInviteeStreet2) === true) {
+			throw(new \InvalidArgumentException("invitee address line 2 is empty or insecure"));
+		}
+
+		// verify the invitee address line 2 will fit in the database
+		if(strlen($newInviteeStreet2) > 64) {
+			throw(new \RangeException("invitee address line 2 too large"));
+		}
+
+		// store the invitee address line 2
+		$this->inviteeStreet2 = $newInviteeStreet2;
 	}
 
 	/**
@@ -145,11 +347,55 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * mutator method for invitee token
+	 *
+	 * @param string|null $newInviteeToken new value of invitee token
+	 * @throws \InvalidArgumentException if $newInviteeToken is not a string of hexits
+	 * @throws \RangeException if $newInviteeToken is not 32 characters
+	 * @throws \TypeError if $newInviteeToken is not a string
+	 **/
+	public function setInviteeToken(string $newInviteeToken) {
+		// verify the invitee token is only hexits
+		$newInviteeToken = trim(strtolower($newInviteeToken));
+		if(ctype_xdigit($newInviteeToken) === false) {
+			throw(new \InvalidArgumentException("invitee token is invalid"));
+		}
+
+		// verify the invitee token is 32 characters long
+		if(strlen($newInviteeToken) !== 32) {
+			throw(new \RangeException("invitee token is invalid"));
+		}
+
+		// store the invitee token
+		$this->inviteeToken = $newInviteeToken;
+	}
+
+	/**
 	 * accessor method for invitee ZIP code
 	 *
 	 * @return string value of invitee ZIP code
 	 **/
 	public function getInviteeZip() {
 		return($this->inviteeZip);
+	}
+
+	/**
+	 * mutator method for invitee ZIP code
+	 *
+	 * @param string|null $newInviteeZip new value of invitee ZIP code
+	 * @throws \InvalidArgumentException if $newInviteeZip is not syntactically valid
+	 * @throws \TypeError if $newInviteeZip is not a string
+	 **/
+	public function setInviteeZip(string $newInviteeZip) {
+		// verify the ZIP code is syntactically valid
+		$zipRegex = "^\d{5}(?:[-\s]\d{4})?$";
+		$newInviteeZip = trim($newInviteeZip);
+		$newInviteeZip = filter_var($newInviteeZip, FILTER_VALIDATE_REGEXP, ["options" => ["regexp" => $zipRegex]]);
+		if($newInviteeZip === false) {
+			throw(new \InvalidArgumentException("invitee ZIP code is invalid"));
+		}
+
+		// store the ZIP code
+		$this->inviteeZip = $newInviteeZip;
 	}
 }
