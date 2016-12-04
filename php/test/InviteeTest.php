@@ -18,9 +18,9 @@ class InviteeTest extends InvitersvpTest {
 	protected $VALID_INVITEECITY = "Burque";
 	/**
 	 * email of the invitee
-	 * @param string $VALID_INVITEEMAIL
+	 * @param string $VALID_INVITEEEMAIL
 	 **/
-	protected $VALID_INVITEEMAIL = "arlo@senate.romulan";
+	protected $VALID_INVITEEEMAIL = "arlo@senate.romulan";
 	/**
 	 * name of the invitee
 	 * @param string $VALID_INVITEENAME
@@ -60,9 +60,9 @@ class InviteeTest extends InvitersvpTest {
 	protected $VALID_INVITEECITY2 = "Los Lunas";
 	/**
 	 * email of the invitee
-	 * @param string $VALID_INVITEEMAIL2
+	 * @param string $VALID_INVITEEEMAIL2
 	 **/
-	protected $VALID_INVITEEMAIL2 = "simon@senate.romulan";
+	protected $VALID_INVITEEEMAIL2 = "simon@senate.romulan";
 	/**
 	 * name of the invitee
 	 * @param string $VALID_INVITEENAME2
@@ -116,5 +116,31 @@ class InviteeTest extends InvitersvpTest {
 		// calculate the tokens
 		$this->VALID_INVITEETOKEN = random_bytes(32);
 		$this->VALID_INVITEETOKEN2 = random_bytes(32);
+	}
+
+
+	/**
+	 * test inserting a valid Invitee and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidInvitee() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("invitee");
+
+		// create a new Invitee and insert to into mySQL
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET1, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoInvitee = Invitee::getInviteeByInviteeId($this->getPDO(), $invitee->getInviteeId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("invitee"));
+		$this->assertEquals($pdoInvitee->getInviteeCity(), $this->VALID_INVITEECITY);
+		$this->assertEquals($pdoInvitee->getInviteeEmail(), $this->VALID_INVITEEEMAIL);
+		$this->assertEquals($pdoInvitee->getInviteeName(), $this->VALID_INVITEENAME);
+		$this->assertEquals($pdoInvitee->getInviteePhone(), $this->VALID_INVITEEPHONE);
+		$this->assertEquals($pdoInvitee->getInviteeState(), $this->VALID_INVITEESTATE);
+		$this->assertEquals($pdoInvitee->getInviteeStreet1(), $this->VALID_INVITEESTREET1);
+		$this->assertEquals($pdoInvitee->getInviteeStreet2(), $this->VALID_INVITEESTREET2);
+		$this->assertEquals($pdoInvitee->getInviteeToken(), $this->VALID_INVITEETOKEN);
+		$this->assertEquals($pdoInvitee->getInviteeZip(), $this->VALID_INVITEEZIP);
 	}
 }
