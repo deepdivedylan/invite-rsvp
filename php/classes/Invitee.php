@@ -73,6 +73,51 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * constructor for this invitee
+	 *
+	 * @param int|null $newInviteeId id of this invitee or null if a new invitee
+	 * @param string $newInviteeCity city of this invitee
+	 * @param string|null $newInviteeEmail email of this invitee (nullable)
+	 * @param string $newInviteeName name of this invitee
+	 * @param string|null $newInviteePhone phone of this invitee (nullable)
+	 * @param string $newInviteeState state of this invitee
+	 * @param string $newInviteeStreet1 address line 1 of this invitee
+	 * @param string $newInviteeStreet2 address line 2 of this invitee (nullable)
+	 * @param string $newInviteeToken token of this invitee
+	 * @param string $newInviteeZip ZIP code of this invitee
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 **/
+	public function __construct(int $newInviteeId = null, string $newInviteeCity, string $newInviteeEmail = null, string $newInviteeName, string $newInviteePhone = null, string $newInviteeState, string $newInviteeStreet1, string $newInviteeStreet2 = null, string $newInviteeToken, string $newInviteeZip) {
+		try {
+			$this->setInviteeId($newInviteeId);
+			$this->setInviteeCity($newInviteeCity);
+			$this->setInviteeEmail($newInviteeEmail);
+			$this->setInviteeName($newInviteeName);
+			$this->setInviteePhone($newInviteePhone);
+			$this->setInviteeState($newInviteeState);
+			$this->setInviteeStreet1($newInviteeStreet1);
+			$this->setInviteeStreet2($newInviteeStreet2);
+			$this->setInviteeToken($newInviteeToken);
+			$this->setInviteeZip($newInviteeZip);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			// rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	 * mutator method for invitee id
 	 *
 	 * @param int|null $newInviteeId new value of invitee id
