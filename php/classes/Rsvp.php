@@ -25,6 +25,11 @@ class Rsvp implements \JsonSerializable {
 	 **/
 	private $rsvpInviteeId;
 	/**
+	 * browser for this Rsvp
+	 * @var string $rsvpBrowser
+	 **/
+	private $rsvpBrowser;
+	/**
 	 * comment for this Rsvp
 	 * @var string $rsvpComment
 	 **/
@@ -44,6 +49,10 @@ class Rsvp implements \JsonSerializable {
 	 * @var \DateTime $rsvpTimestamp
 	 **/
 	private $rsvpTimestamp;
+
+	public function __construct(int $newRsvpId = null, int $newRsvpInviteeId, string $newRsvpBrowser, string $newRsvpComment = null, string $newRsvpIpAddress, int $newRsvpNumPeople, $newRsvpTimestamp) {
+
+	}
 
 	/**
 	 * accessor method for rsvp id
@@ -104,6 +113,40 @@ class Rsvp implements \JsonSerializable {
 	}
 
 	/**
+	 * accessor method for rsvp browser
+	 *
+	 * @return string|null value of rsvp browser
+	 **/
+	public function getRsvpBrowser() {
+		return($this->rsvpBrowser);
+	}
+
+	/**
+	 * mutator method for rsvp browser
+	 *
+	 * @param string $newRsvpBrowser new value of rsvp browser
+	 * @throws \InvalidArgumentException if $newRsvpBrowser is not a string or insecure
+	 * @throws \RangeException if $newRsvpBrowser is > 128 characters
+	 * @throws \TypeError if $newRsvpBrowser is not a string
+	 **/
+	public function setRsvpComment(string $newRsvpBrowser) {
+		// verify the rsvp browser is secure
+		$newRsvpBrowser = trim($newRsvpBrowser);
+		$newRsvpBrowser = filter_var($newRsvpBrowser, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newRsvpBrowser) === true) {
+			throw(new \InvalidArgumentException("rsvp browser is empty or insecure"));
+		}
+
+		// verify the rsvp browser will fit in the database
+		if(strlen($newRsvpBrowser) > 128) {
+			throw(new \RangeException("rsvp browser too large"));
+		}
+
+		// store the rsvp browser
+		$this->rsvpBrowser = $newRsvpBrowser;
+	}
+
+	/**
 	 * accessor method for rsvp comment
 	 *
 	 * @return string|null value of rsvp comment
@@ -129,7 +172,7 @@ class Rsvp implements \JsonSerializable {
 
 		// verify the rsvp comment is secure
 		$newRsvpComment = trim($newRsvpComment);
-		$newRsvpComment = filter_var($newRsvpComment, FILTER_SANITIZE_EMAIL);
+		$newRsvpComment = filter_var($newRsvpComment, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newRsvpComment) === true) {
 			throw(new \InvalidArgumentException("rsvp comment is empty or insecure"));
 		}
