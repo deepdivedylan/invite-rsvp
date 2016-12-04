@@ -1,0 +1,28 @@
+DROP TABLE IF EXISTS invitee;
+DROP TABLE IF EXISTS rsvp;
+
+CREATE TABLE invitee (
+	inviteeId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	inviteeCity VARCHAR(64) NOT NULL,
+	inviteeEmail VARCHAR(64),
+	inviteeName VARCHAR(64) NOT NULL,
+	inviteePhone VARCHAR(24),
+	inviteeState CHAR(2) NOT NULL,
+	inviteeStreet1 VARCHAR(64) NOT NULL,
+	inviteeStreet2 VARCHAR(64),
+	inviteeToken CHAR(32) NOT NULL,
+	inviteeZip CHAR(10) NOT NULL,
+	PRIMARY KEY(inviteeId)
+);
+
+CREATE TABLE rsvp (
+	rsvpId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	rsvpComment VARCHAR(128) NOT NULL,
+	rsvpIpAddress VARBINARY(16) NOT NULL,
+	rsvpInviteeId INT UNSIGNED NOT NULL,
+	rsvpNumPeople TINYINT UNSIGNED NOT NULL,
+	rsvpTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	UNIQUE(rsvpInviteeId),
+	FOREIGN KEY(rsvpInviteeId) REFERENCES invitee(inviteeId),
+	PRIMARY KEY(rsvpId)
+);
