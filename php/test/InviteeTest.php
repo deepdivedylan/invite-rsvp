@@ -97,12 +97,24 @@ class InviteeTest extends InvitersvpTest {
 	//-------------------------GENERATED TOKENS-------------------------------//
 	/**
 	 * token of the invitee
-	 * @param string $VALID_INVITETOKEN
+	 * @param string $VALID_INVITEETOKEN
 	 **/
 	protected $VALID_INVITEETOKEN = null;
 	/**
 	 * token of the invitee
-	 * @param string $VALID_INVITETOKEN2
+	 * @param string $VALID_INVITEETOKEN2
 	 **/
 	protected $VALID_INVITEETOKEN2 = null;
+
+	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setUp() {
+		// run the default setUp() method first
+		parent::setUp();
+
+		// calculate the tokens
+		$this->VALID_INVITEETOKEN = random_bytes(32);
+		$this->VALID_INVITEETOKEN2 = random_bytes(32);
+	}
 }
