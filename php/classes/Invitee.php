@@ -64,15 +64,6 @@ class Invitee implements \JsonSerializable {
 	private $inviteeZip;
 
 	/**
-	 * accessor method for invitee id
-	 *
-	 * @return int|null value of invitee id
-	 **/
-	public function getInviteeId() {
-		return($this->inviteeId);
-	}
-
-	/**
 	 * constructor for this invitee
 	 *
 	 * @param int|null $newInviteeId id of this invitee or null if a new invitee
@@ -115,6 +106,15 @@ class Invitee implements \JsonSerializable {
 			// rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
+	}
+
+	/**
+	 * accessor method for invitee id
+	 *
+	 * @return int|null value of invitee id
+	 **/
+	public function getInviteeId() {
+		return($this->inviteeId);
 	}
 
 	/**
