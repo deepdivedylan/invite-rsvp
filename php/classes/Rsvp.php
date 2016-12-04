@@ -314,6 +314,8 @@ class Rsvp implements \JsonSerializable {
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
+		$fields["rsvpIpAddress"] = inet_ntop($this->rsvpIpAddress);
+		$fields["rsvpTimestamp"] = $this->rsvpTimestamp->getTimestamp() * 1000;
 		return($fields);
 	}
 }
