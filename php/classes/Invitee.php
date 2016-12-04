@@ -62,4 +62,94 @@ class Invitee implements \JsonSerializable {
 	 * @var string $inviteeZip
 	 **/
 	private $inviteeZip;
+
+	/**
+	 * accessor method for invitee id
+	 *
+	 * @return int|null value of invitee id
+	 **/
+	public function getInviteeId() {
+		return($this->inviteeId);
+	}
+
+	/**
+	 * accessor method for invitee city
+	 *
+	 * @return string value of invitee city
+	 **/
+	public function getInviteeCity() {
+		return($this->inviteeCity);
+	}
+
+	/**
+	 * accessor method for invitee email
+	 *
+	 * @return string value of invitee email
+	 **/
+	public function getInviteeEmail() {
+		return($this->inviteeEmail);
+	}
+
+	/**
+	 * accessor method for invitee city
+	 *
+	 * @return string value of invitee city
+	 **/
+	public function getInviteeName() {
+		return($this->inviteeName);
+	}
+
+	/**
+	 * accessor method for invitee phone
+	 *
+	 * @return string|null value of invitee phone
+	 **/
+	public function getInviteePhone() {
+		return($this->inviteePhone);
+	}
+
+	/**
+	 * accessor method for invitee state
+	 *
+	 * @return string value of invitee state
+	 **/
+	public function getInviteeState() {
+		return($this->inviteeState);
+	}
+
+	/**
+	 * accessor method for invitee address line 1
+	 *
+	 * @return string value of invitee address line 1
+	 **/
+	public function getInviteeStreet1() {
+		return($this->inviteeStreet1);
+	}
+
+	/**
+	 * accessor method for invitee address street 2
+	 *
+	 * @return string|null value of invitee address line 2
+	 **/
+	public function getInviteeStreet2() {
+		return($this->inviteeStreet2);
+	}
+
+	/**
+	 * accessor method for invitee token
+	 *
+	 * @return string value of invitee token
+	 **/
+	public function getInviteeToken() {
+		return($this->inviteeToken);
+	}
+
+	/**
+	 * accessor method for invitee ZIP code
+	 *
+	 * @return string value of invitee ZIP code
+	 **/
+	public function getInviteeZip() {
+		return($this->inviteeZip);
+	}
 }
