@@ -44,4 +44,58 @@ class Rsvp implements \JsonSerializable {
 	 * @var \DateTime $rsvpTimestamp
 	 **/
 	private $rsvpTimestamp;
+
+	/**
+	 * accessor method for rsvp id
+	 *
+	 * @return int|null value of rsvp id
+	 **/
+	public function getRsvpId() {
+		return($this->rsvpId);
+	}
+
+	/**
+	 * accessor method for invitee id
+	 *
+	 * @return int value of invitee id
+	 **/
+	public function getRsvpInviteeId() {
+		return($this->rsvpInviteeId);
+	}
+
+	/**
+	 * accessor method for rsvp comment
+	 *
+	 * @return string|null value of rsvp comment
+	 **/
+	public function getRsvpComment() {
+		return($this->rsvpComment);
+	}
+
+	/**
+	 * accessor method for rsvp IP address
+	 *
+	 * @return string value of rsvp IP address in printable form
+	 **/
+	public function getRsvpIpAddress() {
+		return(inet_ntop($this->rsvpIpAddress));
+	}
+
+	/**
+	 * accessor method for rsvp number of people
+	 *
+	 * @return int value of rsvp number of people
+	 **/
+	public function getRsvpNumPeople() {
+		return($this->rsvpNumPeople);
+	}
+
+	/**
+	 * accessor method for rsvp timestamp
+	 *
+	 * @return \DateTime value of rsvp timestamp
+	 **/
+	public function getRsvpTimestamp() {
+		return($this->rsvpTimestamp);
+	}
 }
