@@ -4,7 +4,7 @@ namespace Io\Deepdivedylan\Invitersvp\Test;
 use Io\Deepdivedylan\Invitersvp\Invitee;
 
 // grab the project test parameters
-require_once("InviteeTest.php");
+require_once("InvitersvpTest.php");
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/classes/autoload.php");
@@ -114,8 +114,8 @@ class InviteeTest extends InvitersvpTest {
 		parent::setUp();
 
 		// calculate the tokens
-		$this->VALID_INVITEETOKEN = random_bytes(32);
-		$this->VALID_INVITEETOKEN2 = random_bytes(32);
+		$this->VALID_INVITEETOKEN = bin2hex(random_bytes(16));
+		$this->VALID_INVITEETOKEN2 = bin2hex(random_bytes(16));
 	}
 
 
@@ -127,7 +127,7 @@ class InviteeTest extends InvitersvpTest {
 		$numRows = $this->getConnection()->getRowCount("invitee");
 
 		// create a new Invitee and insert to into mySQL
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET1, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

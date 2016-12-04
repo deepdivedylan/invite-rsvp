@@ -193,7 +193,7 @@ class Invitee implements \JsonSerializable {
 	 **/
 	public function setInviteeEmail(string $newInviteeEmail = null) {
 		// base case: if the invitee email is null, allow it to be null
-		if($newInviteeEmail = null) {
+		if($newInviteeEmail === null) {
 			$this->inviteeEmail = null;
 			return;
 		}
@@ -267,7 +267,7 @@ class Invitee implements \JsonSerializable {
 	 **/
 	public function setInviteePhone(string $newInviteePhone = null) {
 		// base case: if the invitee phone is null, allow it to be null
-		if($newInviteePhone = null) {
+		if($newInviteePhone === null) {
 			$this->inviteePhone = null;
 			return;
 		}
@@ -361,7 +361,7 @@ class Invitee implements \JsonSerializable {
 	 **/
 	public function setInviteeStreet2(string $newInviteeStreet2 = null) {
 		// base case: if the invitee address line 2 is null, allow it to be null
-		if($newInviteeStreet2 = null) {
+		if($newInviteeStreet2 === null) {
 			$this->inviteeStreet2 = null;
 			return;
 		}
@@ -433,7 +433,7 @@ class Invitee implements \JsonSerializable {
 	 **/
 	public function setInviteeZip(string $newInviteeZip) {
 		// verify the ZIP code is syntactically valid
-		$zipRegex = "^\d{5}(?:[-\s]\d{4})?$";
+		$zipRegex = "/^\d{5}(?:[-\s]\d{4})?$/";
 		$newInviteeZip = trim($newInviteeZip);
 		$newInviteeZip = filter_var($newInviteeZip, FILTER_VALIDATE_REGEXP, ["options" => ["regexp" => $zipRegex]]);
 		if($newInviteeZip === false) {
@@ -533,7 +533,7 @@ class Invitee implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["inviteeId" => $this->inviteeId];
+		$parameters = ["inviteeId" => $inviteeId];
 		$statement->execute($parameters);
 
 		// grab the invitee from mySQL
@@ -571,7 +571,7 @@ class Invitee implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["inviteeToken" => $this->inviteeToken];
+		$parameters = ["inviteeToken" => $inviteeToken];
 		$statement->execute($parameters);
 
 		// grab the invitee from mySQL

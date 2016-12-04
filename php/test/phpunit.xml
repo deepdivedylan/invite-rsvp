@@ -1,0 +1,12 @@
+<phpunit>
+	<testsuites>
+		<testsuite name="Invite RSVP System">
+			<file>InviteeTest.php</file>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../classes</directory>
+		</whitelist>
+	</filter>
+</phpunit>
