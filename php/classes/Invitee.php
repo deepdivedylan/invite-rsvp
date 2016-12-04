@@ -514,6 +514,112 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the Invitee by inviteeId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $inviteeId invitee id to search for
+	 * @return Invitee|null Invitee found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getInviteeByInviteeId(\PDO $pdo, int $inviteeId) {
+		// sanitize the $inviteeId before searching
+		if($inviteeId <= 0) {
+			throw(new \PDOException("invitee id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeId = :inviteeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["inviteeId" => $this->inviteeId];
+		$statement->execute($parameters);
+
+		// grab the invitee from mySQL
+		try {
+			$invitee = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($invitee);
+	}
+
+	/**
+	 * gets the Invitee by inviteeToken
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $inviteeToken invitee token to search for
+	 * @return Invitee|null Invitee found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getInviteeByInviteeToken(\PDO $pdo, int $inviteeToken) {
+		// sanitize the $inviteeId before searching
+		if($inviteeId <= 0) {
+			throw(new \PDOException("invitee id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeToken = :inviteeToken";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["inviteeToken" => $this->inviteeToken];
+		$statement->execute($parameters);
+
+		// grab the invitee from mySQL
+		try {
+			$invitee = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($invitee);
+	}
+
+	/**
+	 * gets all Invitees
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Invitees found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllInvitees(\PDO $pdo) {
+		// create query template
+		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of invitees
+		$invitees = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+				$invitees[$invitees->key()] = $invitee;
+				$invitees->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($invitees);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
