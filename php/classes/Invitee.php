@@ -560,12 +560,7 @@ class Invitee implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getInviteeByInviteeToken(\PDO $pdo, int $inviteeToken) {
-		// sanitize the $inviteeId before searching
-		if($inviteeId <= 0) {
-			throw(new \PDOException("invitee id is not positive"));
-		}
-
+	public static function getInviteeByInviteeToken(\PDO $pdo, string $inviteeToken) {
 		// create query template
 		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeToken = :inviteeToken";
 		$statement = $pdo->prepare($query);
