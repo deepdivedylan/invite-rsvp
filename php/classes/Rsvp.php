@@ -308,6 +308,143 @@ class Rsvp implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this Rsvp into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) {
+		// enforce the rsvpId is null (i.e., don't insert a rsvp that already exists)
+		if($this->rsvpId !== null) {
+			throw(new \PDOException("not a new rsvp"));
+		}
+
+		// create query template
+		$query = "INSERT INTO rsvp(rsvpInviteeId, rsvpBrowser, rsvpComment, rsvpIpAddress, rsvpNumPeople) VALUES(:rsvpInviteeId, :rsvpBrowser, :rsvpComment, :rsvpIpAddress, :rsvpNumPeople)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["rsvpInviteeId" => $this->rsvpInviteeId, "rsvpBrowser" => $this->rsvpBrowser, "rsvpComment" => $this->rsvpComment, "rsvpIpAddress" => $this->rsvpIpAddress, "rsvpNumPeople" => $this->rsvpNumPeople];
+		$statement->execute($parameters);
+
+		// update the null rsvpId with what mySQL just gave us
+		$this->rsvpId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * deletes this Rsvp from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) {
+		// enforce the rsvpId is null (i.e., don't delete a rsvp that hasn't been inserted)
+		if($this->inviteeId === null) {
+			throw(new \PDOException("unable to delete a rsvp that does not exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM rsvp WHERE rsvpId = :rsvpId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["rsvpId" => $this->rsvpId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Rsvp in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) {
+		// enforce the rsvpId is null (i.e., don't update a rsvp that hasn't been inserted)
+		if($this->rsvpId === null) {
+			throw(new \PDOException("unable to update a rsvpId that does not exist"));
+		}
+
+		// create query template
+		$query = "UPDATE rsvp SET rsvpInviteeId = :rsvpInviteeId, rsvpBrowser = :rsvpBrowser, rsvpComment = :rsvpComment, rsvpIpAddress = :rsvpIpAddress, rsvpNumPeople = :rsvpNumPeople WHERE rsvpId = :rsvpId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["rsvpInviteeId" => $this->rsvpInviteeId, "rsvpBrowser" => $this->rsvpBrowser, "rsvpComment" => $this->rsvpComment, "rsvpIpAddress" => $this->rsvpIpAddress, "rsvpNumPeople" => $this->rsvpNumPeople, "rsvpId" => $this->rsvpId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * gets the Rsvp by rsvpId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $rsvpId rsvp id to search for
+	 * @return Invitee|null Rsvp found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getRsvpByRsvpId(\PDO $pdo, int $rsvpId) {
+		// sanitize the rsvpId before searching
+		if($rsvpId <= 0) {
+			throw(new \PDOException("rsvp id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT rsvpId, rsvpInviteeId, rsvpBrowser, rsvpComment, rsvpIpAddress, rsvpNumPeople, rsvpTimestamp FROM rsvp WHERE rsvpId = :rsvpId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["rsvpId" => $rsvpId];
+		$statement->execute($parameters);
+
+		// grab the rsvp from mySQL
+		try {
+			$rsvp = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$rsvp = new Rsvp($row["rsvpId"], $row["rsvpInviteeId"], $row["rsvpBrowser"], $row["rsvpComment"], $row["rsvpIpAddress"], $row["rsvpNumPeople"], $row["rsvpTimestamp"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($invitee);
+	}
+
+	/**
+	 * gets all Rsvps
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Rsvps found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllInvitees(\PDO $pdo) {
+		// create query template
+		$query = "SELECT rsvpId, rsvpInviteeId, rsvpBrowser, rsvpComment, rsvpIpAddress, rsvpNumPeople, rsvpTimestamp FROM rsvp";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of invitees
+		$rsvps = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$rsvp = new Rsvp($row["rsvpId"], $row["rsvpInviteeId"], $row["rsvpBrowser"], $row["rsvpComment"], $row["rsvpIpAddress"], $row["rsvpNumPeople"], $row["rsvpTimestamp"]);
+				$rsvps[$rsvps->key()] = $rsvp;
+				$rsvps->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($rsvps);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
