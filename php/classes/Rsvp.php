@@ -240,10 +240,10 @@ class Rsvp implements \JsonSerializable {
 		// detect the IP's format and assign it in binary mode
 		if(@inet_pton($newRsvpIpAddress) !== false) {
 			$this->rsvpIpAddress = inet_pton($newRsvpIpAddress);
-		} else if(@inet_ntop($ipAddress) !== false) {
+		} else if(@inet_ntop($newRsvpIpAddress) !== false) {
 			$this->rsvpIpAddress = $newRsvpIpAddress;
 		} else {
-			throw(new InvalidArgumentException("invalid rsvp IP address"));
+			throw(new \InvalidArgumentException("invalid rsvp IP address"));
 		}
 	}
 
@@ -414,7 +414,7 @@ class Rsvp implements \JsonSerializable {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($invitee);
+		return($rsvp);
 	}
 
 	/**

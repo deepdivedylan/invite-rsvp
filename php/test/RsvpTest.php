@@ -128,4 +128,25 @@ class RsvpTest extends InvitersvpTest {
 		$this->invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$this->invitee->insert($this->getPDO());
 	}
+
+	/**
+	 * test inserting a valid Rsvp and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidInvitee() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
+
+		// create a new Rsvp and insert to into mySQL
+		$rsvp = new Rsvp(null, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoRsvp = Rsvp::getRsvpByRsvpId($this->getPDO(), $rsvp->getRsvpId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
+		$this->assertEquals($pdoRsvp->getRsvpInviteeId(), $this->invitee->getInviteeId());
+		$this->assertEquals($pdoRsvp->getRsvpBrowser(), $this->VALID_RSVPBROWSER);
+		$this->assertEquals($pdoRsvp->getRsvpComment(), $this->VALID_RSVPCOMMENT);
+		$this->assertEquals($pdoRsvp->getRsvpIpAddress(), $this->VALID_RSVPIPADDRESS);
+		$this->assertEquals($pdoRsvp->getRsvpNumPeople(), $this->VALID_RSVPNUMPEOPLE);
+	}
 }
