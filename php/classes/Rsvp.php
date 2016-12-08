@@ -425,7 +425,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllInvitees(\PDO $pdo) {
+	public static function getAllRsvps(\PDO $pdo) {
 		// create query template
 		$query = "SELECT rsvpId, rsvpInviteeId, rsvpBrowser, rsvpComment, rsvpIpAddress, rsvpNumPeople, rsvpTimestamp FROM rsvp";
 		$statement = $pdo->prepare($query);

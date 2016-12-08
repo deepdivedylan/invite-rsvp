@@ -132,7 +132,7 @@ class RsvpTest extends InvitersvpTest {
 	/**
 	 * test inserting a valid Rsvp and verify that the actual mySQL data matches
 	 **/
-	public function testInsertValidInvitee() {
+	public function testInsertValidRsvp() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
@@ -148,5 +148,116 @@ class RsvpTest extends InvitersvpTest {
 		$this->assertEquals($pdoRsvp->getRsvpComment(), $this->VALID_RSVPCOMMENT);
 		$this->assertEquals($pdoRsvp->getRsvpIpAddress(), $this->VALID_RSVPIPADDRESS);
 		$this->assertEquals($pdoRsvp->getRsvpNumPeople(), $this->VALID_RSVPNUMPEOPLE);
+		$this->assertEquals($pdoRsvp->getRsvpTimestamp(), $this->VALID_RSVPTIMESTAMP);
+	}
+
+	/**
+	 * test inserting a Rsvp that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidRsvp() {
+		// create a Invitee with a non null invitee id and watch it fail
+		$rsvp = new Rsvp(InvitersvpTest::INVALID_KEY, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting an Rsvp, editing it, and then updating it
+	 **/
+	public function testUpdateValidRsvp() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
+
+		// create a new Rsvp and insert to into mySQL
+		$rsvp = new Rsvp(null, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->insert($this->getPDO());
+
+		// edit the Rsvp and update it in mySQL
+		$rsvp->setRsvpBrowser($this->VALID_RSVPBROWSER2);
+		$rsvp->setRsvpComment($this->VALID_RSVPCOMMENT2);
+		$rsvp->setRsvpIpAddress($this->VALID_RSVPIPADDRESS2);
+		$rsvp->setRsvpNumPeople($this->VALID_RSVPNUMPEOPLE2);
+		$rsvp->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoRsvp = Rsvp::getRsvpByRsvpId($this->getPDO(), $rsvp->getRsvpId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
+		$this->assertEquals($pdoRsvp->getRsvpInviteeId(), $this->invitee->getInviteeId());
+		$this->assertEquals($pdoRsvp->getRsvpBrowser(), $this->VALID_RSVPBROWSER2);
+		$this->assertEquals($pdoRsvp->getRsvpComment(), $this->VALID_RSVPCOMMENT2);
+		$this->assertEquals($pdoRsvp->getRsvpIpAddress(), inet_ntop($this->VALID_RSVPIPADDRESS2));
+		$this->assertEquals($pdoRsvp->getRsvpNumPeople(), $this->VALID_RSVPNUMPEOPLE2);
+		$this->assertEquals($pdoRsvp->getRsvpTimestamp(), $this->VALID_RSVPTIMESTAMP2);
+	}
+
+	/**
+	 * test updating a Rsvp that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidRsvp() {
+		// create a Invitee with a non null invitee id and watch it fail
+		$rsvp = new Rsvp(null, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->update($this->getPDO());
+	}
+
+	/**
+	 * test inserting an Rsvp and deleting it
+	 **/
+	public function testDeleteValidRsvp() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
+
+		// create a new Rsvp and insert to into mySQL
+		$rsvp = new Rsvp(null, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->insert($this->getPDO());
+
+		// delete the Rsvp from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
+		$rsvp->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the Rsvp does not exist
+		$pdoRsvp = Rsvp::getRsvpByRsvpId($this->getPDO(), $rsvp->getRsvpId());
+		$this->assertNull($pdoRsvp);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("rsvp"));
+	}
+
+	/**
+	 * test deleting a Rsvp that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testDeleteInvalidRsvp() {
+		// create a Invitee with a non null invitee id and watch it fail
+		$rsvp = new Rsvp(null, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->delete($this->getPDO());
+	}
+
+	/**
+	 * test grabbing all Rsvps
+	 **/
+	public function testGetAllValidRsvps() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
+
+		// create a new Rsvp and insert to into mySQL
+		$rsvp = new Rsvp(null, $this->invitee->getInviteeId(), $this->VALID_RSVPBROWSER, $this->VALID_RSVPCOMMENT, $this->VALID_RSVPIPADDRESS, $this->VALID_RSVPNUMPEOPLE);
+		$rsvp->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Rsvp::getAllRsvps($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Io\\Deepdivedylan\\Invitersvp\\Rsvp", $results);
+
+		// grab the result from the array and validate it
+		$pdoRsvp = $results[0];
+		$this->assertEquals($pdoRsvp->getRsvpInviteeId(), $this->invitee->getInviteeId());
+		$this->assertEquals($pdoRsvp->getRsvpBrowser(), $this->VALID_RSVPBROWSER);
+		$this->assertEquals($pdoRsvp->getRsvpComment(), $this->VALID_RSVPCOMMENT);
+		$this->assertEquals($pdoRsvp->getRsvpIpAddress(), $this->VALID_RSVPIPADDRESS);
+		$this->assertEquals($pdoRsvp->getRsvpNumPeople(), $this->VALID_RSVPNUMPEOPLE);
+		$this->assertEquals($pdoRsvp->getRsvpTimestamp(), $this->VALID_RSVPTIMESTAMP);
 	}
 }
