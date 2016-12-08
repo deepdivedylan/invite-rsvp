@@ -330,6 +330,9 @@ class Rsvp implements \JsonSerializable {
 
 		// update the null rsvpId with what mySQL just gave us
 		$this->rsvpId = intval($pdo->lastInsertId());
+
+		// estimate the timestamp by using the current time (not perfect, but saves another SQL query)
+		$this->rsvpTimestamp = new \DateTime();
 	}
 
 	/**
