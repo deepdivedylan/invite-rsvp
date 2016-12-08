@@ -2,6 +2,7 @@
 	<testsuites>
 		<testsuite name="Invite RSVP System">
 			<file>InviteeTest.php</file>
+			<file>RsvpTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
