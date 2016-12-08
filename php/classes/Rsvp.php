@@ -344,7 +344,7 @@ class Rsvp implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo) {
 		// enforce the rsvpId is null (i.e., don't delete a rsvp that hasn't been inserted)
-		if($this->inviteeId === null) {
+		if($this->rsvpId === null) {
 			throw(new \PDOException("unable to delete a rsvp that does not exist"));
 		}
 
