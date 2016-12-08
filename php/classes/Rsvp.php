@@ -65,7 +65,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newRsvpId = null, int $newRsvpInviteeId, string $newRsvpBrowser, string $newRsvpComment = null, string $newRsvpIpAddress, int $newRsvpNumPeople, $newRsvpTimestamp) {
+	public function __construct(int $newRsvpId = null, int $newRsvpInviteeId, string $newRsvpBrowser, string $newRsvpComment = null, string $newRsvpIpAddress, int $newRsvpNumPeople, $newRsvpTimestamp = null) {
 		try {
 			$this->setRsvpId($newRsvpId);
 			$this->setRsvpInviteeId($newRsvpInviteeId);
