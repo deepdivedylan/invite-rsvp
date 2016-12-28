@@ -507,11 +507,11 @@ class Invitee implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO invitee(inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip) VALUES(:inviteeCity, :inviteeEmail, :inviteeName, :inviteePhone, :inviteeState, :inviteeStreet1, :inviteeStreet2, :inviteeToken, :inviteeZip)";
+		$query = "INSERT INTO invitee(inviteeCity, inviteeCountry, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip) VALUES(:inviteeCity, :inviteeCountry, :inviteeEmail, :inviteeName, :inviteePhone, :inviteeState, :inviteeStreet1, :inviteeStreet2, :inviteeToken, :inviteeZip)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["inviteeCity" => $this->inviteeCity, "inviteeEmail" => $this->inviteeEmail, "inviteeName" => $this->inviteeName, "inviteePhone" => $this->inviteePhone, "inviteeState" => $this->inviteeState, "inviteeStreet1" => $this->inviteeStreet1, "inviteeStreet2" => $this->inviteeStreet2, "inviteeToken" => $this->inviteeToken, "inviteeZip" => $this->inviteeZip];
+		$parameters = ["inviteeCity" => $this->inviteeCity, "inviteeCountry" => $this->inviteeCountry, "inviteeEmail" => $this->inviteeEmail, "inviteeName" => $this->inviteeName, "inviteePhone" => $this->inviteePhone, "inviteeState" => $this->inviteeState, "inviteeStreet1" => $this->inviteeStreet1, "inviteeStreet2" => $this->inviteeStreet2, "inviteeToken" => $this->inviteeToken, "inviteeZip" => $this->inviteeZip];
 		$statement->execute($parameters);
 
 		// update the null inviteeId with what mySQL just gave us
@@ -554,11 +554,11 @@ class Invitee implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "UPDATE invitee SET inviteeCity = :inviteeCity, inviteeEmail = :inviteeEmail, inviteeName = :inviteeName, inviteePhone = :inviteePhone, inviteeState = :inviteeState, inviteeStreet1 = :inviteeStreet1, inviteeStreet2 = :inviteeStreet2, inviteeToken = :inviteeToken, inviteeZip = :inviteeZip WHERE inviteeId = :inviteeId";
+		$query = "UPDATE invitee SET inviteeCity = :inviteeCity, inviteeCountry = :inviteeCountry, inviteeEmail = :inviteeEmail, inviteeName = :inviteeName, inviteePhone = :inviteePhone, inviteeState = :inviteeState, inviteeStreet1 = :inviteeStreet1, inviteeStreet2 = :inviteeStreet2, inviteeToken = :inviteeToken, inviteeZip = :inviteeZip WHERE inviteeId = :inviteeId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["inviteeId" => $this->inviteeId, "inviteeCity" => $this->inviteeCity, "inviteeEmail" => $this->inviteeEmail, "inviteeName" => $this->inviteeName, "inviteePhone" => $this->inviteePhone, "inviteeState" => $this->inviteeState, "inviteeStreet1" => $this->inviteeStreet1, "inviteeStreet2" => $this->inviteeStreet2, "inviteeToken" => $this->inviteeToken, "inviteeZip" => $this->inviteeZip];
+		$parameters = ["inviteeId" => $this->inviteeId, "inviteeCity" => $this->inviteeCity, "inviteeCountry" => $this->inviteeCountry, "inviteeEmail" => $this->inviteeEmail, "inviteeName" => $this->inviteeName, "inviteePhone" => $this->inviteePhone, "inviteeState" => $this->inviteeState, "inviteeStreet1" => $this->inviteeStreet1, "inviteeStreet2" => $this->inviteeStreet2, "inviteeToken" => $this->inviteeToken, "inviteeZip" => $this->inviteeZip];
 		$statement->execute($parameters);
 	}
 
@@ -578,7 +578,7 @@ class Invitee implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeId = :inviteeId";
+		$query = "SELECT inviteeId, inviteeCity, inviteeCountry, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeId = :inviteeId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
@@ -591,7 +591,7 @@ class Invitee implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeCountry"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -611,7 +611,7 @@ class Invitee implements \JsonSerializable {
 	 **/
 	public static function getInviteeByInviteeToken(\PDO $pdo, string $inviteeToken) {
 		// create query template
-		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeToken = :inviteeToken";
+		$query = "SELECT inviteeId, inviteeCity, inviteeCountry, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee WHERE inviteeToken = :inviteeToken";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
@@ -624,7 +624,7 @@ class Invitee implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeCountry"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -643,7 +643,7 @@ class Invitee implements \JsonSerializable {
 	 **/
 	public static function getAllInvitees(\PDO $pdo) {
 		// create query template
-		$query = "SELECT inviteeId, inviteeCity, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee";
+		$query = "SELECT inviteeId, inviteeCity, inviteeCountry, inviteeEmail, inviteeName, inviteePhone, inviteeState, inviteeStreet1, inviteeStreet2, inviteeToken, inviteeZip FROM invitee";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -652,7 +652,7 @@ class Invitee implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCountry"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
 				$invitees[$invitees->key()] = $invitee;
 				$invitees->next();
 			} catch(\Exception $exception) {
