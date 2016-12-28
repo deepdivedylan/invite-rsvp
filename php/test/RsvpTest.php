@@ -13,7 +13,7 @@ class RsvpTest extends InvitersvpTest {
 	//----------------------------INVITE OBJECT-------------------------------//
 	/**
 	 * city of the invitee
-	 * @param string $VALID_INVITEECITY
+	 * @var string $VALID_INVITEECITY
 	 **/
 	protected $VALID_INVITEECITY = "Burque";
 	/**
@@ -23,101 +23,101 @@ class RsvpTest extends InvitersvpTest {
 	 protected $VALID_INVITEECOUNTRY = "US";
 	/**
 	 * email of the invitee
-	 * @param string $VALID_INVITEEEMAIL
+	 * @var string $VALID_INVITEEEMAIL
 	 **/
 	protected $VALID_INVITEEEMAIL = "arlo@senate.romulan";
 	/**
 	 * name of the invitee
-	 * @param string $VALID_INVITEENAME
+	 * @var string $VALID_INVITEENAME
 	 **/
 	protected $VALID_INVITEENAME = "Senator Arlo";
 	/**
 	 * phone of the invitee
-	 * @param string $VALID_INVITEEPHONE
+	 * @var string $VALID_INVITEEPHONE
 	 **/
 	protected $VALID_INVITEEPHONE = "+15055551212";
 	/**
 	 * state of the invitee
-	 * @param string $VALID_INVITEESTATE
+	 * @var string $VALID_INVITEESTATE
 	 **/
 	protected $VALID_INVITEESTATE = "NM";
 	/**
 	 * address line 1 of the invitee
-	 * @param string $VALID_INVITEESTREET1
+	 * @var string $VALID_INVITEESTREET1
 	 **/
 	protected $VALID_INVITEESTREET1 = "3701 Carlisle Blvd NE";
 	/**
 	 * address line 2 of the invitee
-	 * @param string $VALID_INVITEESTREET2
+	 * @var string $VALID_INVITEESTREET2
 	 **/
 	protected $VALID_INVITEESTREET2 = "Senator Arlo's Nap Chamber";
 	/**
 	 * ZIP code of the invitee
-	 * @param string $VALID_INVITEEZIP
+	 * @var string $VALID_INVITEEZIP
 	 **/
 	 protected $VALID_INVITEEZIP = "87110";
 
 	//---------------------------DEFAULT OBJECT-------------------------------//
 	/**
 	 * browser of the rsvp
-	 * @param string $VALID_RSVPBROWSER
+	 * @var string $VALID_RSVPBROWSER
 	 **/
 	protected $VALID_RSVPBROWSER = "Netscape 1.0a";
 	/**
 	 * comment of the rsvp
-	 * @param string $VALID_RSVPCOMMENT
+	 * @var string $VALID_RSVPCOMMENT
 	 **/
 	protected $VALID_RSVPCOMMENT = "Senator Arlo requires a nap corner";
 	/**
 	 * IP address of the rsvp
-	 * @param string $VALID_RSVPIPADDRESS
+	 * @var string $VALID_RSVPIPADDRESS
 	 **/
 	protected $VALID_RSVPIPADDRESS = "2600::deaf:beef:cafe";
 	/**
 	 * number of people of the rsvp
-	 * @param string $VALID_RSVPNUMPEOPLE
+	 * @var string $VALID_RSVPNUMPEOPLE
 	 **/
 	protected $VALID_RSVPNUMPEOPLE = 42;
 	/**
 	 * timestamp of the rsvp
-	 * @param string $VALID_RSVPTIMESTAMP
+	 * @var string $VALID_RSVPTIMESTAMP
 	 **/
 	protected $VALID_RSVPTIMESTAMP = null;
 	//---------------------------SECOND OBJECT--------------------------------//
 	/**
 	 * browser of the rsvp
-	 * @param string $VALID_RSVPBROWSER2
+	 * @var string $VALID_RSVPBROWSER2
 	 **/
 	protected $VALID_RSVPBROWSER2 = "Mosiac 95 Deluxe Edition";
 	/**
 	 * comment of the rsvp
-	 * @param string $VALID_RSVPCOMMENT2
+	 * @var string $VALID_RSVPCOMMENT2
 	 **/
 	protected $VALID_RSVPCOMMENT2 = "Senator Arlo is on a back paws only diet";
 	/**
 	 * IP address of the rsvp
-	 * @param string $VALID_RSVPIPADDRESS2
+	 * @var string $VALID_RSVPIPADDRESS2
 	 **/
 	protected $VALID_RSVPIPADDRESS2 = null;
 	/**
 	 * number of people of the rsvp
-	 * @param string $VALID_RSVPNUMPEOPLE2
+	 * @var string $VALID_RSVPNUMPEOPLE2
 	 **/
 	protected $VALID_RSVPNUMPEOPLE2 = 16;
 	/**
 	 * timestamp of the rsvp
-	 * @param string $VALID_RSVPTIMESTAMP2
+	 * @var string $VALID_RSVPTIMESTAMP2
 	 **/
 	protected $VALID_RSVPTIMESTAMP2 = null;
 	//------------------------GENERATED OBJECTS-------------------------------//
 	/**
 	 * token of the invitee
-	 * @param string $VALID_INVITEETOKEN
+	 * @var string $VALID_INVITEETOKEN
 	 **/
 	protected $VALID_INVITEETOKEN = null;
 	/**
 	 * Invitee for the Rsvp
-	 * @param Invitee $invitee
+	 * @var Invitee $invitee
 	 **/
 	protected $invitee = null;
 
