@@ -4,10 +4,11 @@ DROP TABLE IF EXISTS invitee;
 CREATE TABLE invitee (
 	inviteeId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	inviteeCity VARCHAR(64) NOT NULL,
+	inviteeCountry CHAR(2) NOT NULL,
 	inviteeEmail VARCHAR(64),
 	inviteeName VARCHAR(64) NOT NULL,
 	inviteePhone VARCHAR(24),
-	inviteeState CHAR(2) NOT NULL,
+	inviteeState VARCHAR(32) NOT NULL,
 	inviteeStreet1 VARCHAR(64) NOT NULL,
 	inviteeStreet2 VARCHAR(64),
 	inviteeToken CHAR(32) NOT NULL,
