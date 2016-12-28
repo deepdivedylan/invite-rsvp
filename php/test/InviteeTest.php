@@ -162,7 +162,7 @@ class InviteeTest extends InvitersvpTest {
 	 **/
 	public function testInsertInvalidInvitee() {
 		// create a Invitee with a non null invitee id and watch it fail
-		$invitee = new Invitee(InvitersvpTest::INVALID_KEY, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(InvitersvpTest::INVALID_KEY, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 	}
 
@@ -212,7 +212,7 @@ class InviteeTest extends InvitersvpTest {
 	 **/
 	public function testUpdateInvalidInvitee() {
 		// create a Invitee with a non null invitee id and watch it fail
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->update($this->getPDO());
 	}
 
@@ -224,7 +224,7 @@ class InviteeTest extends InvitersvpTest {
 		$numRows = $this->getConnection()->getRowCount("invitee");
 
 		// create a new Invitee and insert to into mySQL
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 
 		// delete the Invitee from mySQL
@@ -244,7 +244,7 @@ class InviteeTest extends InvitersvpTest {
 	 **/
 	public function testDeleteInvalidInvitee() {
 		// create a Invitee with a non null invitee id and watch it fail
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->delete($this->getPDO());
 	}
 

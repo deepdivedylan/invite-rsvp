@@ -110,6 +110,7 @@ class Invitee implements \JsonSerializable {
 			// rethrow the exception to the caller
 			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
 		} catch(\Exception $exception) {
+		$this->assertEquals($pdoInvitee->getInviteeCountry(), $this->VALID_INVITEECOUNTRY);
 			// rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
@@ -157,34 +158,6 @@ class Invitee implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for invitee country
-	 *
-	 * @param string $newInviteeCountry new value of invitee country
-	 * @throws \InvalidArgumentException if $newInviteeCountry is not a string or insecure
-	 * @throws \TypeError if $newInviteeCountry is not a string
-	 **/
-	public function setInviteeCountry(string $newInviteeCountry) {
-		// verify the invtee country is valid
-		$newInviteeCountry = trim($newInviteeCountry);
-		$countries = ["AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CU", "CV", "CW", "CX", "CY", "CZ", "DE", "DJ", "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES", "ET", "FI", "FJ", "FK", "FM", "FO", "FR", "GA", "GB", "GD", "GE", "GF", "GG", "GH", "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW", "GY", "HK", "HM", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IM", "IN", "IO", "IQ", "IR", "IS", "IT", "JE", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KP", "KR", "KW", "KY", "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD", "ME", "MF", "MG", "MH", "MK", "ML", "MM", "MN", "MO", "MP", "MQ", "MR", "MS", "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NF", "NG", "NI", "NL", "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF", "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PW", "PY", "QA", "RE", "RO", "RS", "RU", "RW", "SA", "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS", "ST", "SV", "SX", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"];
-		if(in_array($newInviteeCountry, $countries, true) === false) {
-			throw(new InvalidArgumentException("invitee country is invalid"));
-		}
-
-		// store the invitee country
-		$this->inviteeCountry = $newInviteeCountry;
-	}
-
-	/**
-	 * accessor method for invitee country
-	 *
-	 * @return string value of invitee country
-	 **/
-	public function getInviteeCountry() {
-		return($this->inviteeCity);
-	}
-
-	/**
 	 * mutator method for invitee city
 	 *
 	 * @param string $newInviteeCity new value of invitee city
@@ -207,6 +180,34 @@ class Invitee implements \JsonSerializable {
 
 		// store the invitee city
 		$this->inviteeCity = $newInviteeCity;
+	}
+
+	/**
+	 * mutator method for invitee country
+	 *
+	 * @param string $newInviteeCountry new value of invitee country
+	 * @throws \InvalidArgumentException if $newInviteeCountry is not a string or insecure
+	 * @throws \TypeError if $newInviteeCountry is not a string
+	 **/
+	public function setInviteeCountry(string $newInviteeCountry) {
+		// verify the invtee country is valid
+		$newInviteeCountry = trim($newInviteeCountry);
+		$countries = ["AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CU", "CV", "CW", "CX", "CY", "CZ", "DE", "DJ", "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES", "ET", "FI", "FJ", "FK", "FM", "FO", "FR", "GA", "GB", "GD", "GE", "GF", "GG", "GH", "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW", "GY", "HK", "HM", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IM", "IN", "IO", "IQ", "IR", "IS", "IT", "JE", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KP", "KR", "KW", "KY", "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD", "ME", "MF", "MG", "MH", "MK", "ML", "MM", "MN", "MO", "MP", "MQ", "MR", "MS", "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NF", "NG", "NI", "NL", "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF", "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PW", "PY", "QA", "RE", "RO", "RS", "RU", "RW", "SA", "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS", "ST", "SV", "SX", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"];
+		if(in_array($newInviteeCountry, $countries, true) === false) {
+			throw(new \InvalidArgumentException("invitee country is invalid"));
+		}
+
+		// store the invitee country
+		$this->inviteeCountry = $newInviteeCountry;
+	}
+
+	/**
+	 * accessor method for invitee country
+	 *
+	 * @return string value of invitee country
+	 **/
+	public function getInviteeCountry() {
+		return($this->inviteeCountry);
 	}
 
 	/**
@@ -652,7 +653,7 @@ class Invitee implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$invitee = new Invitee($row["inviteeId"], $row["inviteeCountry"], $row["inviteeCity"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
+				$invitee = new Invitee($row["inviteeId"], $row["inviteeCity"], $row["inviteeCountry"], $row["inviteeEmail"], $row["inviteeName"], $row["inviteePhone"], $row["inviteeState"], $row["inviteeStreet1"], $row["inviteeStreet2"], $row["inviteeToken"], $row["inviteeZip"]);
 				$invitees[$invitees->key()] = $invitee;
 				$invitees->next();
 			} catch(\Exception $exception) {
