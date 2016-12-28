@@ -13,96 +13,106 @@ class InviteeTest extends InvitersvpTest {
 	//---------------------------DEFAULT OBJECT-------------------------------//
 	/**
 	 * city of the invitee
-	 * @param string $VALID_INVITEECITY
+	 * @var string $VALID_INVITEECITY
 	 **/
 	protected $VALID_INVITEECITY = "Burque";
 	/**
+	 * country of the invitee
+	 * @var string $VALID_INVITEECOUNTRY
+	 **/
+	 protected $VALID_INVITEECOUNTRY = "US";
+	/**
 	 * email of the invitee
-	 * @param string $VALID_INVITEEEMAIL
+	 * @var string $VALID_INVITEEEMAIL
 	 **/
 	protected $VALID_INVITEEEMAIL = "arlo@senate.romulan";
 	/**
 	 * name of the invitee
-	 * @param string $VALID_INVITEENAME
+	 * @var string $VALID_INVITEENAME
 	 **/
 	protected $VALID_INVITEENAME = "Senator Arlo";
 	/**
 	 * phone of the invitee
-	 * @param string $VALID_INVITEEPHONE
+	 * @var string $VALID_INVITEEPHONE
 	 **/
 	protected $VALID_INVITEEPHONE = "+15055551212";
 	/**
 	 * state of the invitee
-	 * @param string $VALID_INVITEESTATE
+	 * @var string $VALID_INVITEESTATE
 	 **/
 	protected $VALID_INVITEESTATE = "NM";
 	/**
 	 * address line 1 of the invitee
-	 * @param string $VALID_INVITEESTREET1
+	 * @var string $VALID_INVITEESTREET1
 	 **/
 	protected $VALID_INVITEESTREET1 = "3701 Carlisle Blvd NE";
 	/**
 	 * address line 2 of the invitee
-	 * @param string $VALID_INVITEESTREET2
+	 * @var string $VALID_INVITEESTREET2
 	 **/
 	protected $VALID_INVITEESTREET2 = "Senator Arlo's Nap Chamber";
 	/**
 	 * ZIP code of the invitee
-	 * @param string $VALID_INVITEEZIP
+	 * @var string $VALID_INVITEEZIP
 	 **/
 	 protected $VALID_INVITEEZIP = "87110";
 
 	//---------------------------SECOND OBJECT--------------------------------//
 	/**
 	 * city of the invitee
-	 * @param string $VALID_INVITEECITY2
+	 * @var string $VALID_INVITEECITY2
 	 **/
 	protected $VALID_INVITEECITY2 = "Los Lunas";
 	/**
+	 * country of the invitee
+	 * @var string $VALID_INVITEECOUNTRY2
+	 **/
+	 protected $VALID_INVITEECOUNTRY2 = "MX";
+	/**
 	 * email of the invitee
-	 * @param string $VALID_INVITEEEMAIL2
+	 * @var string $VALID_INVITEEEMAIL2
 	 **/
 	protected $VALID_INVITEEEMAIL2 = "simon@senate.romulan";
 	/**
 	 * name of the invitee
-	 * @param string $VALID_INVITEENAME2
+	 * @var string $VALID_INVITEENAME2
 	 **/
 	protected $VALID_INVITEENAME2 = "Praetor Si'mon";
 	/**
 	 * phone of the invitee
-	 * @param string $VALID_INVITEEPHONE2
+	 * @var string $VALID_INVITEEPHONE2
 	 **/
 	protected $VALID_INVITEEPHONE2 = "+18188675309";
 	/**
 	 * state of the invitee
-	 * @param string $VALID_INVITEESTATE2
+	 * @var string $VALID_INVITEESTATE2
 	 **/
 	protected $VALID_INVITEESTATE2 = "CA";
 	/**
 	 * address line 1 of the invitee
-	 * @param string $VALID_INVITEESTREET12
+	 * @var string $VALID_INVITEESTREET12
 	 **/
 	protected $VALID_INVITEESTREET12 = "9550 Haskell Ave";
 	/**
 	 * address line 2 of the invitee
-	 * @param string $VALID_INVITEESTREET22
+	 * @var string $VALID_INVITEESTREET22
 	 **/
 	protected $VALID_INVITEESTREET22 = "Praetor Si'mon's Hall of Fuzzy";
 	/**
 	 * ZIP code of the invitee
-	 * @param string $VALID_INVITEEZIP2
+	 * @var string $VALID_INVITEEZIP2
 	 **/
 	 protected $VALID_INVITEEZIP2 = "91343";
 
 	//-------------------------GENERATED TOKENS-------------------------------//
 	/**
 	 * token of the invitee
-	 * @param string $VALID_INVITEETOKEN
+	 * @var string $VALID_INVITEETOKEN
 	 **/
 	protected $VALID_INVITEETOKEN = null;
 	/**
 	 * token of the invitee
-	 * @param string $VALID_INVITEETOKEN2
+	 * @var string $VALID_INVITEETOKEN2
 	 **/
 	protected $VALID_INVITEETOKEN2 = null;
 
@@ -127,13 +137,14 @@ class InviteeTest extends InvitersvpTest {
 		$numRows = $this->getConnection()->getRowCount("invitee");
 
 		// create a new Invitee and insert to into mySQL
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoInvitee = Invitee::getInviteeByInviteeId($this->getPDO(), $invitee->getInviteeId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("invitee"));
 		$this->assertEquals($pdoInvitee->getInviteeCity(), $this->VALID_INVITEECITY);
+		$this->assertEquals($pdoInvitee->getInviteeCountry(), $this->VALID_INVITEECOUNTRY);
 		$this->assertEquals($pdoInvitee->getInviteeEmail(), $this->VALID_INVITEEEMAIL);
 		$this->assertEquals($pdoInvitee->getInviteeName(), $this->VALID_INVITEENAME);
 		$this->assertEquals($pdoInvitee->getInviteePhone(), $this->VALID_INVITEEPHONE);
@@ -163,11 +174,12 @@ class InviteeTest extends InvitersvpTest {
 		$numRows = $this->getConnection()->getRowCount("invitee");
 
 		// create a new Invitee and insert to into mySQL
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 
 		// edit the Invitee and update it in mySQL
 		$invitee->setInviteeCity($this->VALID_INVITEECITY2);
+		$invitee->setInviteeCountry($this->VALID_INVITEECOUNTRY2);
 		$invitee->setInviteeEmail($this->VALID_INVITEEEMAIL2);
 		$invitee->setInviteeName($this->VALID_INVITEENAME2);
 		$invitee->setInviteePhone($this->VALID_INVITEEPHONE2);
@@ -182,6 +194,7 @@ class InviteeTest extends InvitersvpTest {
 		$pdoInvitee = Invitee::getInviteeByInviteeId($this->getPDO(), $invitee->getInviteeId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("invitee"));
 		$this->assertEquals($pdoInvitee->getInviteeCity(), $this->VALID_INVITEECITY2);
+		$this->assertEquals($pdoInvitee->getInviteeCountry(), $this->VALID_INVITEECOUNTRY2);
 		$this->assertEquals($pdoInvitee->getInviteeEmail(), $this->VALID_INVITEEEMAIL2);
 		$this->assertEquals($pdoInvitee->getInviteeName(), $this->VALID_INVITEENAME2);
 		$this->assertEquals($pdoInvitee->getInviteePhone(), $this->VALID_INVITEEPHONE2);
@@ -243,13 +256,14 @@ class InviteeTest extends InvitersvpTest {
 		$numRows = $this->getConnection()->getRowCount("invitee");
 
 		// create a new Invitee and insert to into mySQL
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoInvitee = Invitee::getInviteeByInviteeToken($this->getPDO(), $invitee->getInviteeToken());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("invitee"));
 		$this->assertEquals($pdoInvitee->getInviteeCity(), $this->VALID_INVITEECITY);
+		$this->assertEquals($pdoInvitee->getInviteeCountry(), $this->VALID_INVITEECOUNTRY);
 		$this->assertEquals($pdoInvitee->getInviteeEmail(), $this->VALID_INVITEEEMAIL);
 		$this->assertEquals($pdoInvitee->getInviteeName(), $this->VALID_INVITEENAME);
 		$this->assertEquals($pdoInvitee->getInviteePhone(), $this->VALID_INVITEEPHONE);
@@ -277,7 +291,7 @@ class InviteeTest extends InvitersvpTest {
 		$numRows = $this->getConnection()->getRowCount("invitee");
 
 		// create a new Invitee and insert to into mySQL
-		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$invitee->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -290,6 +304,7 @@ class InviteeTest extends InvitersvpTest {
 		$pdoInvitee = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("invitee"));
 		$this->assertEquals($pdoInvitee->getInviteeCity(), $this->VALID_INVITEECITY);
+		$this->assertEquals($pdoInvitee->getInviteeCountry(), $this->VALID_INVITEECOUNTRY);
 		$this->assertEquals($pdoInvitee->getInviteeEmail(), $this->VALID_INVITEEEMAIL);
 		$this->assertEquals($pdoInvitee->getInviteeName(), $this->VALID_INVITEENAME);
 		$this->assertEquals($pdoInvitee->getInviteePhone(), $this->VALID_INVITEEPHONE);
