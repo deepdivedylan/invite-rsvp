@@ -17,6 +17,11 @@ class RsvpTest extends InvitersvpTest {
 	 **/
 	protected $VALID_INVITEECITY = "Burque";
 	/**
+	 * country of the invitee
+	 * @var string $VALID_INVITEECOUNTRY
+	 **/
+	 protected $VALID_INVITEECOUNTRY = "US";
+	/**
 	 * email of the invitee
 	 * @param string $VALID_INVITEEEMAIL
 	 **/
@@ -125,7 +130,7 @@ class RsvpTest extends InvitersvpTest {
 		$this->VALID_RSVPIPADDRESS2 = chr(192) . chr(168) . chr(38) . chr(96);
 
 		$this->VALID_INVITEETOKEN = bin2hex(random_bytes(16));
-		$this->invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
+		$this->invitee = new Invitee(null, $this->VALID_INVITEECITY, $this->VALID_INVITEECOUNTRY, $this->VALID_INVITEEEMAIL, $this->VALID_INVITEENAME, $this->VALID_INVITEEPHONE, $this->VALID_INVITEESTATE, $this->VALID_INVITEESTREET1, $this->VALID_INVITEESTREET2, $this->VALID_INVITEETOKEN, $this->VALID_INVITEEZIP);
 		$this->invitee->insert($this->getPDO());
 	}
 
