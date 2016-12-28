@@ -23,6 +23,11 @@ class Invitee implements \JsonSerializable {
 	 **/
 	private $inviteeCity;
 	/**
+	 * country for this Invitee
+	 * @var string $inviteeCountry
+	 **/
+	private $inviteeCountry;
+	/**
 	 * email for this Invitee
 	 * @var string $inviteeEmail
 	 **/
@@ -68,6 +73,7 @@ class Invitee implements \JsonSerializable {
 	 *
 	 * @param int|null $newInviteeId id of this invitee or null if a new invitee
 	 * @param string $newInviteeCity city of this invitee
+	 * @param string $newInviteeCountry country of this invitee
 	 * @param string|null $newInviteeEmail email of this invitee (nullable)
 	 * @param string $newInviteeName name of this invitee
 	 * @param string|null $newInviteePhone phone of this invitee (nullable)
@@ -81,10 +87,11 @@ class Invitee implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newInviteeId = null, string $newInviteeCity, string $newInviteeEmail = null, string $newInviteeName, string $newInviteePhone = null, string $newInviteeState, string $newInviteeStreet1, string $newInviteeStreet2 = null, string $newInviteeToken, string $newInviteeZip) {
+	public function __construct(int $newInviteeId = null, string $newInviteeCity, string $newInviteeCountry, string $newInviteeEmail = null, string $newInviteeName, string $newInviteePhone = null, string $newInviteeState, string $newInviteeStreet1, string $newInviteeStreet2 = null, string $newInviteeToken, string $newInviteeZip) {
 		try {
 			$this->setInviteeId($newInviteeId);
 			$this->setInviteeCity($newInviteeCity);
+			$this->setInviteeCountry($newInviteeCountry);
 			$this->setInviteeEmail($newInviteeEmail);
 			$this->setInviteeName($newInviteeName);
 			$this->setInviteePhone($newInviteePhone);
@@ -146,6 +153,34 @@ class Invitee implements \JsonSerializable {
 	 * @return string value of invitee city
 	 **/
 	public function getInviteeCity() {
+		return($this->inviteeCity);
+	}
+
+	/**
+	 * mutator method for invitee country
+	 *
+	 * @param string $newInviteeCountry new value of invitee country
+	 * @throws \InvalidArgumentException if $newInviteeCountry is not a string or insecure
+	 * @throws \TypeError if $newInviteeCountry is not a string
+	 **/
+	public function setInviteeCountry(string $newInviteeCountry) {
+		// verify the invtee country is valid
+		$newInviteeCountry = trim($newInviteeCountry);
+		$countries = ["AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CU", "CV", "CW", "CX", "CY", "CZ", "DE", "DJ", "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES", "ET", "FI", "FJ", "FK", "FM", "FO", "FR", "GA", "GB", "GD", "GE", "GF", "GG", "GH", "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW", "GY", "HK", "HM", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IM", "IN", "IO", "IQ", "IR", "IS", "IT", "JE", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KP", "KR", "KW", "KY", "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD", "ME", "MF", "MG", "MH", "MK", "ML", "MM", "MN", "MO", "MP", "MQ", "MR", "MS", "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NF", "NG", "NI", "NL", "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF", "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PW", "PY", "QA", "RE", "RO", "RS", "RU", "RW", "SA", "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS", "ST", "SV", "SX", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"];
+		if(in_array($newInviteeCountry, $countries, true) === false) {
+			throw(new InvalidArgumentException("invitee country is invalid"));
+		}
+
+		// store the invitee country
+		$this->inviteeCountry = $newInviteeCountry;
+	}
+
+	/**
+	 * accessor method for invitee country
+	 *
+	 * @return string value of invitee country
+	 **/
+	public function getInviteeCountry() {
 		return($this->inviteeCity);
 	}
 
@@ -297,11 +332,25 @@ class Invitee implements \JsonSerializable {
 		return($this->inviteeState);
 	}
 
+	/**
+	 * mutator method for invitee state
+	 *
+	 * @param string $newInviteeState new value of invitee state
+	 * @throws \InvalidArgumentException if $newInviteeState is not a string or insecure
+	 * @throws \RangeException if $newInviteeState is > 32 characters
+	 * @throws \TypeError if $newInviteeState is not a string
+	 **/
 	public function setInviteeState(string $newInviteeState) {
-		// verify the invitee state actually exists
-		$states = ["AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FM", "FL", "GA", "GU", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MH", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "MP", "OH", "OK", "OR", "PW", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VI", "VA", "WA", "WV", "WI", "WY"];
-		if(in_array($newInviteeState, $states) === false) {
-			throw(new \InvalidArgumentException("invitee state is invalid"));
+		// verify the invitee state is secure
+		$newInviteeState = trim($newInviteeState);
+		$newInviteeState = filter_var($newInviteeState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newInviteeState) === true) {
+			throw(new \InvalidArgumentException("invitee state is empty or insecure"));
+		}
+
+		// verify the invitee state will fit in the database
+		if(strlen($newInviteeState) > 32) {
+			throw(new \RangeException("invitee state too large"));
 		}
 
 		// store the invitee state
