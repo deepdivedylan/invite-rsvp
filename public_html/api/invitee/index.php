@@ -61,48 +61,70 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure tweet content is available (required field)
-		if(empty($requestObject->tweetContent) === true) {
-			throw(new \InvalidArgumentException ("No content for Tweet.", 405));
+		// make sure invitee city is available (required field)
+		if(empty($requestObject->inviteeCity) === true) {
+			throw(new \InvalidArgumentException("No city for Invitee", 405));
 		}
 
-		// make sure tweet date is accurate (optional field)
-		if(empty($requestObject->tweetDate) === true) {
-			$requestObject->tweetDate = new \DateTime();
+		// make sure invitee country is available (required field)
+		if(empty($requestObject->inviteeCountry) === true) {
+			throw(new \InvalidArgumentException("No country for Invitee", 405));
 		}
 
-		//  make sure profileId is available
-		if(empty($requestObject->profileId) === true) {
-			throw(new \InvalidArgumentException ("No Profile ID.", 405));
+		// make sure invitee name is available (required field)
+		if(empty($requestObject->inviteeName) === true) {
+			throw(new \InvalidArgumentException("No name for Invitee", 405));
+		}
+
+		// make sure invitee state is available (required field)
+		if(empty($requestObject->inviteeState) === true) {
+			throw(new \InvalidArgumentException("No state for Invitee", 405));
+		}
+
+		// make sure invitee street 1 is available (required field)
+		if(empty($requestObject->inviteeStreet1) === true) {
+			throw(new \InvalidArgumentException("No street 1 for Invitee", 405));
+		}
+
+		// make sure invitee zip is available (required field)
+		if(empty($requestObject->inviteeZip) === true) {
+			throw(new \InvalidArgumentException("No ZIP for Invitee", 405));
 		}
 
 		//perform the actual put or post
 		if($method === "PUT") {
 
-			// retrieve the tweet to update
-			$tweet = Tweet::getTweetByTweetId($pdo, $id);
-			if($tweet === null) {
-				throw(new RuntimeException("Tweet does not exist", 404));
+			// retrieve the invitee to update
+			$invitee = Invitee::getInviteeByInviteeId($pdo, $id);
+			if($invitee === null) {
+				throw(new RuntimeException("Invitee does not exist", 404));
 			}
 
-			// update all attributes
-			$tweet->setTweetDate($requestObject->tweetDate);
-			$tweet->setTweetContent($requestObject->tweetContent);
-			$tweet->update($pdo);
+			// update all attributes - except token, which is immutable
+			$invitee->setInviteeCity($requestObject->inviteeCity);
+			$invitee->setInviteeCountry($requestObject->inviteeCountry);
+			$invitee->setIniteeEmail($requestObject->inviteeEmail);
+			$invitee->setInviteeName($requestObject->inviteeName);
+			$invitee->setInviteePhone($requestObject->inviteePhone);
+			$invitee->setInviteeState($requestObject->inviteeState);
+			$invitee->setInviteeStreet1($requestObject->inviteeStreet1);
+			$invitee->setInviteeStreet2($requestObject->inviteeStreet2);
+			$invitee->setInviteeZip($requestObject->inviteeZip);
+			$invitee->update($pdo);
 
 			// update reply
-			$reply->message = "Tweet updated OK";
+			$reply->message = "Invitee updated OK";
 
 		} else if($method === "POST") {
 
-			// create new tweet and insert into the database
-			$tweet = new Tweet(null, $requestObject->profileId, $requestObject->tweetContent, null);
-			$tweet->insert($pdo);
+			// create new invitee and insert into the database
+			$inviteeToken = bin2hex(random_bytes(16));
+			$invitee = new Invitee(null, $requestObject->inviteeCity, $requestObject->inviteeCountry, $requestObject->inviteeEmail, $requestObject->inviteeName, $requestObject->inviteePhone, $requestObject->inviteeState, $requestObject->inviteeStreet1, $requestObject->inviteeStreet2, $inviteeToken, $requestObject->inviteeZip);
+			$invitee->insert($pdo);
 
 			// update reply
-			$reply->message = "Tweet created OK";
+			$reply->message = "Invitee created OK";
 		}
-
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
@@ -112,7 +134,7 @@ try {
 			throw(new RuntimeException("Invitee does not exist", 404));
 		}
 
-		// delete tweet
+		// delete invitee
 		$invitee->delete($pdo);
 
 		// update reply
