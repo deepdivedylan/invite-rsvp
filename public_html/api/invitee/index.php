@@ -103,7 +103,7 @@ try {
 			// update all attributes - except token, which is immutable
 			$invitee->setInviteeCity($requestObject->inviteeCity);
 			$invitee->setInviteeCountry($requestObject->inviteeCountry);
-			$invitee->setIniteeEmail($requestObject->inviteeEmail);
+			$invitee->setInviteeEmail($requestObject->inviteeEmail);
 			$invitee->setInviteeName($requestObject->inviteeName);
 			$invitee->setInviteePhone($requestObject->inviteePhone);
 			$invitee->setInviteeState($requestObject->inviteeState);
