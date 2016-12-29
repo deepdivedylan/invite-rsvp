@@ -106,17 +106,17 @@ try {
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
-		// retrieve the Tweet to be deleted
-		$tweet = Tweet::getTweetByTweetId($pdo, $id);
-		if($tweet === null) {
-			throw(new RuntimeException("Tweet does not exist", 404));
+		// retrieve the invitee to be deleted
+		$invitee = Invitee::getInviteeByInviteeId($pdo, $id);
+		if($invitee === null) {
+			throw(new RuntimeException("Invitee does not exist", 404));
 		}
 
 		// delete tweet
-		$tweet->delete($pdo);
+		$invitee->delete($pdo);
 
 		// update reply
-		$reply->message = "Tweet deleted OK";
+		$reply->message = "Invitee deleted OK";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
