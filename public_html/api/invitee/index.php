@@ -61,7 +61,7 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// make sure invitee city is available (required field)
+		// make sure invitee city is available (required field){"status":200,"data":[]}
 		if(empty($requestObject->inviteeCity) === true) {
 			throw(new \InvalidArgumentException("No city for Invitee", 405));
 		}
