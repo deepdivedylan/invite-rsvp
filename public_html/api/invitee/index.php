@@ -32,6 +32,10 @@ try {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
+	// verify there's an admin logged in
+	if(emtpy($_SESSION["login"]) === true) {
+		throw(new InvalidArgumentException("not logged in", 401));
+	}
 
 	// handle GET request - if id is present, that invitee is returned, otherwise all invitees are returned
 	if($method === "GET") {
@@ -61,7 +65,7 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// make sure invitee city is available (required field){"status":200,"data":[]}
+		// make sure invitee city is available (required field)
 		if(empty($requestObject->inviteeCity) === true) {
 			throw(new \InvalidArgumentException("No city for Invitee", 405));
 		}
