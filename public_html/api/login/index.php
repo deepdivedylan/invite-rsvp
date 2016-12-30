@@ -64,6 +64,7 @@ try {
 		}
 
 	} else {
+		$reply->method = $method;
 		if($method === "GET") {
 			setXsrfCookie();
 		}
