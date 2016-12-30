@@ -32,6 +32,11 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
+		// make sure invitee token is available (required field)
+		if(empty($inviteeToken) === true) {
+			throw(new \InvalidArgumentException("No invitee token for Rsvp", 405));
+		}
+
 		// make sure rsvp number of people is available (required field)
 		if(empty($requestObject->rsvpNumPeople) === true) {
 			throw(new \InvalidArgumentException("No number of people for Rsvp", 405));
