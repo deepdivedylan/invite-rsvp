@@ -38,8 +38,8 @@ try {
 		}
 
 		// make sure rsvp comment is available (optional field)
-		if(empty($requestObject->inviteeCountry) === true) {
-			$requestObject->inviteeCountry = null;
+		if(empty($requestObject->rsvpComment) === true) {
+			$requestObject->rsvpComment = null;
 		}
 
 		// make sure invitee exists
