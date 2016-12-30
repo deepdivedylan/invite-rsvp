@@ -1,10 +1,31 @@
 <?php
-
-require_once(dirname(__DIR__, 3) .  "/php/classes/autoload.php");
-require_once(dirname(__DIR__, 3) .  "/php/lib/xsrf.php");
+require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 use Io\Deepdivedylan\Invitersvp\{Invitee, Rsvp};
+
+$acceptMessage = "<h1>Thank You for RSVPing!</h1>
+<p>Hi __NAME__,</p>
+<p>Thank you for RSVPing for our wedding! We're so happy you can share our day of joy with us! We look forward to seeing you there. Mark your calendars for the big day on April 8th.</p>
+<p>If you don't live in the Albuquerque area, you can get a special rate at the Crowne Plaza for $64 / night by calling <a href=\"tel:+15058842500\">505.884.2500</a> and saying you're part of the McDonald/Ration Wedding. You can also book online using the following link:<br />
+<a href=\"https://www.crowneplaza.com/redirect?path=hd&brandCode=cp&localeCode=en&regionCode=1&hotelCode=ABQCP&_PMID=99801505&GPC=MRW&viewfullsite=true\">https://www.crowneplaza.com/redirect?path=hd&brandCode=cp&localeCode=en&regionCode=1&hotelCode=ABQCP&_PMID=99801505&GPC=MRW&viewfullsite=true</a><br />
+Selecting the dates near our wedding (e.g., April 7th to April 9th) will automatically apply the group rate. Feel free to contact either of us if you have any questions.</p>
+<p>We are registered at Amazon, which can be accessed using the following link:<br />
+<a href=\"https://www.amazon.com/wedding/tony-ration-dylan-mcdonald-albuquerque-april-2017/registry/19NDQHAPUZZKD\">https://www.amazon.com/wedding/tony-ration-dylan-mcdonald-albuquerque-april-2017/registry/19NDQHAPUZZKD</a></p>
+<p>Again, we're delighted you can make it! Let either of us know if you have any questions.</p>
+<p>With love &lt;3</p>
+<p>Tony &amp; Dylan</p>";
+
+$rejectMessage = "<h1>Thank You for RSVPing!</h1>
+<p>Hi __NAME__,</p>
+<p>Thank you for RSVPing for our wedding! We regret that you cannot make it to share in our joy.</p>
+<p>We are registered at Amazon, which can be accessed using the following link:<br />
+<a href=\"https://www.amazon.com/wedding/tony-ration-dylan-mcdonald-albuquerque-april-2017/registry/19NDQHAPUZZKD\">https://www.amazon.com/wedding/tony-ration-dylan-mcdonald-albuquerque-april-2017/registry/19NDQHAPUZZKD</a></p>
+<p>Again, we're sorry you cannot make it. Let either of us know if you have any questions.</p>
+<p>With love &lt;3</p>
+<p>Tony &amp; Dylan</p>";
 
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
