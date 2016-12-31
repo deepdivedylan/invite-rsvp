@@ -31,6 +31,12 @@ export class InviteeService extends BaseService {
 			.catch(this.handleError));
 	}
 
+	getInviteeByInviteeToken(inviteeToken: string) : Observable<Invitee> {
+		return(this.http.get(this.inviteeUrl + "?inviteeToken=" + inviteeToken)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
 	createInvitee(invitee: Invitee) : Observable<Status> {
 		return(this.http.post(this.inviteeUrl, invitee)
 			.map(this.extractMessage)
