@@ -48,7 +48,28 @@ try {
 	$inviteeToken = filter_input(INPUT_GET, "inviteeToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	// handle POST requests
-	if($method === "POST") {
+	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
+
+		// verify there's an admin logged in
+		if(emtpy($_SESSION["login"]) === true) {
+			throw(new InvalidArgumentException("not logged in", 401));
+		}
+
+		if(empty($inviteeToken) === false) {
+			$invitee = Invitee::getInviteeByInviteeToken($pdo, $inviteeToken);
+			$rsvp = Rsvp::getRvspByInviteeId($pdo, $invitee->getInviteeId());
+			if($invitee !== null) {
+				$reply->data = $rsvp;
+			}
+		} else {
+			$rsvps = Rsvp::getAllRsvps($pdo)->toArray();
+			if($invitees !== null) {
+				$reply->data = $rsvps;
+			}
+		}
+	} else if($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
