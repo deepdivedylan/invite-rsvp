@@ -23,7 +23,7 @@ try {
 	if($method === "GET") {
 		setXsrfCookie();
 		$reply->data = new stdClass();
-		$reply->data->loginStatus = (empty($_SESSION["profile"]) === false);
+		$reply->data->loginStatus = (empty($_SESSION["login"]) === false);
 	} else if($method === "POST") {
 
 		verifyXsrf();
