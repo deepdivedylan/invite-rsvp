@@ -4,4 +4,4 @@ import {Component} from "@angular/core";
 	templateUrl: "./templates/login.php"
 })
 
-export class SplashComponent {}
+export class LoginComponent {}
