@@ -1,5 +1,4 @@
 <?php
-
 require_once(dirname(__DIR__, 3) .  "/php/classes/autoload.php");
 require_once(dirname(__DIR__, 3) .  "/php/lib/xsrf.php");
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
@@ -20,8 +19,12 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	// handle POST request
-	if($method === "POST") {
+	// handle GET request
+	if($method === "GET") {
+		setXsrfCookie();
+		$reply->data = new stdClass();
+		$reply->data->loginStatus = (empty($_SESSION["profile"]) === false);
+	} else if($method === "POST") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -64,9 +67,6 @@ try {
 		}
 
 	} else {
-		if($method === "GET") {
-			setXsrfCookie();
-		}
 		throw (new InvalidArgumentException("Invalid HTTP method request", 400));
 	}
 
