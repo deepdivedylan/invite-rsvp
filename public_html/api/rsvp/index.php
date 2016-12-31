@@ -78,30 +78,32 @@ try {
 		$rsvp = new Rsvp(null, $invitee->getInviteeId(), $_SERVER["HTTP_USER_AGENT"], $requestObject->rsvpComment, $_SERVER["REMOTE_ADDR"], $requestObject->rsvpNumPeople, null);
 		$rsvp->insert($pdo);
 
-		// send the invitee an Email
-		$swiftMessage = Swift_Message::newInstance();
-		$swiftMessage->setFrom(["wedding@deepdivedylan.io" => "Dylan And Tony's Wedding"]);
-		$swiftMessage->setTo([$invitee->getInviteeEmail() => $invitee->getInviteeName()]);
-		$swiftMessage->setSubject("Dylan and Tony's Wedding RSVP");
+		// send the invitee an Email, if one was entered
+		if($invitee->getInviteeEmail() !== null) {
+			$swiftMessage = Swift_Message::newInstance();
+			$swiftMessage->setFrom(["wedding@deepdivedylan.io" => "Dylan And Tony's Wedding"]);
+			$swiftMessage->setTo([$invitee->getInviteeEmail() => $invitee->getInviteeName()]);
+			$swiftMessage->setSubject("Dylan and Tony's Wedding RSVP");
 
-		// generate message based on acceptance
-		if($rsvp->getRsvpNumPeople() === 0) {
-			$message = $rejectMessage;
-		} else {
-			$message = $acceptMessage;
-		}
-		$message = str_replace("__NAME__", $invitee->getInviteeName(), $message);
+			// generate message based on acceptance
+			if($rsvp->getRsvpNumPeople() === 0) {
+				$message = $rejectMessage;
+			} else {
+				$message = $acceptMessage;
+			}
+			$message = str_replace("__NAME__", $invitee->getInviteeName(), $message);
 
 
-		// now send the message
-		$swiftMessage->setBody($message, "text/html");
-		$swiftMessage->addPart(html_entity_decode($message), "text/plain");
-		$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
-		$mailer = Swift_Mailer::newInstance($smtp);
-		$numSent = $mailer->send($swiftMessage, $failedRecipients);
-		if($numSent !== count($recipients)) {
-			// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
-			throw(new RuntimeException("unable to send email"));
+			// now send the message
+			$swiftMessage->setBody($message, "text/html");
+			$swiftMessage->addPart(html_entity_decode($message), "text/plain");
+			$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
+			$mailer = Swift_Mailer::newInstance($smtp);
+			$numSent = $mailer->send($swiftMessage, $failedRecipients);
+			if($numSent !== count($recipients)) {
+				// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
+				throw(new RuntimeException("unable to send email"));
+			}
 		}
 
 		// update reply
