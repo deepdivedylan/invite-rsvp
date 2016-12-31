@@ -130,9 +130,6 @@ try {
 		// update reply
 		$reply->message = "Rsvp created OK";
 	} else {
-		if($method === "GET") {
-			setXsrfCookie();
-		}
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
