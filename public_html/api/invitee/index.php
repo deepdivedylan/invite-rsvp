@@ -33,8 +33,8 @@ try {
 	}
 
 	// verify there's an admin logged in
-	if(emtpy($_SESSION["login"]) === true) {
-		throw(new InvalidArgumentException("not logged in", 401));
+	if(empty($_SESSION["login"]) === true) {
+		throw(new \InvalidArgumentException("not logged in", 401));
 	}
 
 	// handle GET request - if id is present, that invitee is returned, otherwise all invitees are returned
