@@ -3,7 +3,7 @@ require_once(dirname(__DIR__, 3) .  "/php/classes/autoload.php");
 require_once(dirname(__DIR__, 3) .  "/php/lib/xsrf.php");
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
-use Io\Deepdivedylan\Invitersvp\Invitee;
+use Io\Deepdivedylan\Invitersvp\{Invitee, Rsvp};
 
 /**
  * function to verify if an admin is logged in
@@ -57,7 +57,9 @@ try {
 		} else if(empty($inviteeToken) === false) {
 			$invitee = Invitee::getInviteeByInviteeToken($pdo, $inviteeToken);
 			if($invitee !== null) {
-				$reply->data = $invitee;
+				$reply->data = new stdClass();
+				$reply->data->invitee = $invitee;
+				$reply->data->rsvp = Rsvp::getRsvpByRsvpInviteeId($pdo, $invitee->getInviteeId());
 			}
 		} else {
 			verifyAdmin();

@@ -19,6 +19,12 @@ export class RsvpService extends BaseService {
 			.catch(this.handleError));
 	}
 
+	getRsvpByInviteeId(inviteeId: number) : Observable<Rsvp> {
+		return(this.http.get(this.rsvpUrl + "?inviteeId=" + inviteeId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
 	getRsvpByInviteeToken(inviteeToken: string) : Observable<Rsvp> {
 		return(this.http.get(this.rsvpUrl + "?inviteeToken=" + inviteeToken)
 			.map(this.extractData)

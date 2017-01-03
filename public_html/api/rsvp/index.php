@@ -62,7 +62,7 @@ try {
 			$rsvp = Rsvp::getRvspByRsvpId($pdo, $id);
 			$reply->data = $rsvp;
 		} else if(empty($rsvpInviteeId) === false) {
-			$rsvp = Rsvp::getRvspByInviteeId($pdo, $rsvpInviteeId);
+			$rsvp = Rsvp::getRsvpByRsvpInviteeId($pdo, $rsvpInviteeId);
 			$reply->data = $rsvp;
 		} else {
 			$rsvps = Rsvp::getAllRsvps($pdo)->toArray();

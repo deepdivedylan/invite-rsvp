@@ -418,6 +418,44 @@ class Rsvp implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the Rsvp by rsvpId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $rsvpInviteeId rsvp invitee id to search for
+	 * @return Invitee|null Rsvp found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getRsvpByRsvpInviteeId(\PDO $pdo, int $rsvpInviteeId) {
+		// sanitize the rsvpInviteeId before searching
+		if($rsvpInviteeId <= 0) {
+			throw(new \PDOException("rsvp invitee id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT rsvpId, rsvpInviteeId, rsvpBrowser, rsvpComment, rsvpIpAddress, rsvpNumPeople, rsvpTimestamp FROM rsvp WHERE rsvpInviteeId = :rsvpInviteeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["rsvpInviteeId" => $rsvpInviteeId];
+		$statement->execute($parameters);
+
+		// grab the rsvp from mySQL
+		try {
+			$rsvp = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$rsvp = new Rsvp($row["rsvpId"], $row["rsvpInviteeId"], $row["rsvpBrowser"], $row["rsvpComment"], $row["rsvpIpAddress"], $row["rsvpNumPeople"], $row["rsvpTimestamp"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($rsvp);
+	}
+
+	/**
 	 * gets all Rsvps
 	 *
 	 * @param \PDO $pdo PDO connection object
