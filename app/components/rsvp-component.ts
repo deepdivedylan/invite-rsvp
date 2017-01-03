@@ -24,7 +24,10 @@ export class RsvpComponent implements OnInit {
 	getInviteeByToken() : void {
 		this.route.params
 			.switchMap((params : Params) => this.inviteeService.getInviteeByInviteeToken(params["inviteeToken"]))
-			.subscribe(invitee => this.invitee = invitee);
+			.subscribe(invitee => {
+				this.invitee = invitee;
+				this.rsvp.rsvpInviteeId = this.invitee.inviteeId;
+			});
 	}
 
 }
