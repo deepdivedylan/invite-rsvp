@@ -44,8 +44,9 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	//sanitize input
-	$inviteeToken = filter_input(INPUT_GET, "inviteeToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	// sanitize input
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$rsvpInviteeId = filter_input(INPUT_GET, "rsvpInviteeId", FILTER_VALIDATE_INT);
 
 	// handle POST requests
 	if($method === "GET") {
@@ -57,26 +58,24 @@ try {
 			throw(new InvalidArgumentException("not logged in", 401));
 		}
 
-		if(empty($inviteeToken) === false) {
-			$invitee = Invitee::getInviteeByInviteeToken($pdo, $inviteeToken);
-			$rsvp = Rsvp::getRvspByInviteeId($pdo, $invitee->getInviteeId());
-			if($invitee !== null) {
-				$reply->data = $rsvp;
-			}
+		if(empty($id) === false) {
+			$rsvp = Rsvp::getRvspByRsvpId($pdo, $id);
+			$reply->data = $rsvp;
+		} else if(empty($rsvpInviteeId) === false) {
+			$rsvp = Rsvp::getRvspByInviteeId($pdo, $rsvpInviteeId);
+			$reply->data = $rsvp;
 		} else {
 			$rsvps = Rsvp::getAllRsvps($pdo)->toArray();
-			if($invitees !== null) {
-				$reply->data = $rsvps;
-			}
+			$reply->data = $rsvps;
 		}
 	} else if($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// make sure invitee token is available (required field)
-		if(empty($inviteeToken) === true) {
-			throw(new \InvalidArgumentException("No invitee token for Rsvp", 405));
+		// make sure invitee id is available (required field)
+		if(empty($requestObject->rsvpInviteeId) === true) {
+			throw(new \InvalidArgumentException("No invitee id for Rsvp", 405));
 		}
 
 		// make sure rsvp number of people is available (required field)
@@ -90,7 +89,7 @@ try {
 		}
 
 		// make sure invitee exists
-		$invitee = Invitee::getInviteeByInviteeToken($pdo, $inviteeToken);
+		$invitee = Invitee::getInviteeByInviteeId($pdo, $requestObject->rsvpInviteeId);
 		if($invitee === null) {
 			throw(new \InvalidArgumentException("Invitee not found", 404));
 		}
@@ -121,7 +120,7 @@ try {
 			$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
 			$mailer = Swift_Mailer::newInstance($smtp);
 			$numSent = $mailer->send($swiftMessage, $failedRecipients);
-			if($numSent !== count($recipients)) {
+			if($numSent !== 1) {
 				// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
 				throw(new RuntimeException("unable to send email"));
 			}
