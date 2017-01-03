@@ -19,9 +19,15 @@
 				<p *ngIf="rsvpNumPeople.errors?.min">Number of people is required.</p>
 				<p *ngIf="rsvpNumPeople.errors?.required">Number of people cannot be negative.</p>
 			</div>
+			<div *ngIf="rsvp.rsvpNumPeople === 0" class="alert alert-warning" role="alert">
+				<i class="fa fa-frown-o" aria-hidden="true"></i> We're so sorry you can't join us. <i class="fa fa-frown-o" aria-hidden="true"></i>
+			</div>
+			<div *ngIf="rsvp.rsvpNumPeople > 0" class="alert alert-info" role="alert">
+				<i class="fa fa-smile-o" aria-hidden="true"></i> You are RSVPing for yourself and {{ rsvp.rsvpNumPeople - 1 }} other people. So glad you can make it! <i class="fa fa-smile-o" aria-hidden="true"></i>
+			</div>
 		</div>
 		<div class="form-group" [ngClass]="{ 'has-error': rsvpComment.touched && rsvpComment.invalid }">
-			<label for="rsvpComment">Comment</label>
+			<label for="rsvpComment">Comment (Optional)</label>
 			<div class="input-group">
 				<div class="input-group-addon">
 					<i class="fa fa-commenting" aria-hidden="true"></i>
