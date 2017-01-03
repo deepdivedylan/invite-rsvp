@@ -1,10 +1,20 @@
 <?php
-
 require_once(dirname(__DIR__, 3) .  "/php/classes/autoload.php");
 require_once(dirname(__DIR__, 3) .  "/php/lib/xsrf.php");
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 use Io\Deepdivedylan\Invitersvp\Invitee;
+
+/**
+ * function to verify if an admin is logged in
+ * @throws \InvalidArgumentException when an admin is not logged in
+ **/
+function verifyAdmin() {
+	// verify there's an admin logged in
+	if(empty($_SESSION["login"]) === true) {
+		throw(new \InvalidArgumentException("not logged in", 401));
+	}
+}
 
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -32,11 +42,6 @@ try {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
-	// verify there's an admin logged in
-	if(empty($_SESSION["login"]) === true) {
-		throw(new \InvalidArgumentException("not logged in", 401));
-	}
-
 	// handle GET request - if id is present, that invitee is returned, otherwise all invitees are returned
 	if($method === "GET") {
 		//set XSRF cookie
@@ -44,6 +49,7 @@ try {
 
 		//get a specific invitee or all invitees and update reply
 		if(empty($id) === false) {
+			verifyAdmin();
 			$invitee = Invitee::getInviteeByInviteeId($pdo, $id);
 			if($invitee !== null) {
 				$reply->data = $invitee;
@@ -54,6 +60,7 @@ try {
 				$reply->data = $invitee;
 			}
 		} else {
+			verifyAdmin();
 			$invitees = Invitee::getAllInvitees($pdo)->toArray();
 			if($invitees !== null) {
 				$reply->data = $invitees;
@@ -61,6 +68,7 @@ try {
 		}
 	} else if($method === "PUT" || $method === "POST") {
 
+		verifyAdmin();
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
@@ -130,6 +138,7 @@ try {
 			$reply->message = "Invitee created OK";
 		}
 	} else if($method === "DELETE") {
+		verifyAdmin();
 		verifyXsrf();
 
 		// retrieve the invitee to be deleted
