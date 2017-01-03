@@ -5,7 +5,7 @@
 	</div>
 </div>
 <div *ngIf="invitee !== undefined && invitee !== null">
-	<form #rsvpForm="ngForm" class="form-horizontal well" name="rsvpForm" id="rsvpForm" (ngSubmit)="sendRsvp();" novalidate>
+	<form #rsvpForm="ngForm" class="form-horizontal well" name="rsvpForm" id="rsvpForm" (ngSubmit)="createRsvp();" novalidate>
 		<h1>RSVP For {{ invitee.inviteeName }}</h1>
 		<div class="form-group" [ngClass]="{ 'has-error': rsvpNumPeople.touched && rsvpNumPeople.invalid }">
 			<label for="rsvpNumPeople">Number of People</label>

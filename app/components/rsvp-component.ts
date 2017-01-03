@@ -3,6 +3,7 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {Invitee} from "../classes/invitee";
 import {InviteeService} from "../services/invitee-service";
 import {Rsvp} from "../classes/rsvp";
+import {RsvpService} from "../services/rsvp-service";
 import {Status} from "../classes/status";
 import "rxjs/add/operator/switchMap";
 
@@ -15,7 +16,7 @@ export class RsvpComponent implements OnInit {
 	rsvp : Rsvp = new Rsvp(null, null, "", "", "", 0, new Date());
 	status : Status = null;
 
-	constructor(private inviteeService: InviteeService, private route: ActivatedRoute) {}
+	constructor(private inviteeService: InviteeService, private rsvpService: RsvpService, private route: ActivatedRoute) {}
 
 	ngOnInit() : void {
 		this.getInviteeByToken();
@@ -30,4 +31,8 @@ export class RsvpComponent implements OnInit {
 			});
 	}
 
+	createRsvp() : void {
+		this.rsvpService.createRsvp(this.rsvp)
+			.subscribe(status => this.status = status);
+	}
 }
