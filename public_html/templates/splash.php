@@ -1,6 +1,6 @@
 <h1>Invite &amp; RSVP Admin</h1>
 <h2>Invitees</h2>
-<table class="table table-bordered table-responsive table-striped table-word-wrap">
+<table class="table table-bordered table-responsive table-striped">
 	<tr>
 		<th>Invitee ID</th>
 		<th>Invitee Name</th>
@@ -32,7 +32,7 @@
 		Display Debug Information
 	</label>
 </div>
-<table class="table table-bordered table-responsive table-striped table-word-wrap">
+<table class="table table-bordered table-responsive table-striped">
 	<tr>
 		<th>RSVP ID</th>
 		<th>RSVP Invitee ID</th>
@@ -47,7 +47,7 @@
 		<td>{{ rsvp.rsvpInviteeId }}</td>
 		<td>{{ rsvp.rsvpComment }}</td>
 		<td>{{ rsvp.rsvpNumPeople }}</td>
-		<td>{{ rsvp.rsvpTimestamp }}</td>
+		<td>{{ rsvp.rsvpTimestamp | date : "medium" }}</td>
 		<td *ngIf="displayDebug">{{ rsvp.rsvpBrowser }}</td>
 		<td *ngIf="displayDebug">{{ rsvp.rsvpIpAddress }}</td>
 	</tr>
