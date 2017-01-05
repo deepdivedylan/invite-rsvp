@@ -49,9 +49,9 @@ export class RsvpComponent implements OnInit {
 
 	sendRsvp() : void {
 		if(this.alreadyRsvped === true) {
-			this.createRsvp();
-		} else {
 			this.editRsvp();
+		} else {
+			this.createRsvp();
 		}
 	}
 }
