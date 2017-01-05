@@ -5,8 +5,11 @@
 	</div>
 </div>
 <div *ngIf="invitee !== undefined && invitee !== null">
-	<form #rsvpForm="ngForm" class="form-horizontal well" name="rsvpForm" id="rsvpForm" (ngSubmit)="createRsvp();" novalidate>
+	<form #rsvpForm="ngForm" class="form-horizontal well" name="rsvpForm" id="rsvpForm" (ngSubmit)="sendRsvp();" novalidate>
 		<h1>RSVP For {{ invitee.inviteeName }}</h1>
+		<div *ngIf="alreadyRsvped" class="alert alert-info" role="alert">
+			<i class="fa fa-info" aria-hidden="true"></i> You have already RSVPed. You can edit your RSVP information here.
+		</div>
 		<div class="form-group" [ngClass]="{ 'has-error': rsvpNumPeople.touched && rsvpNumPeople.invalid }">
 			<label for="rsvpNumPeople">Number of People</label>
 			<div class="input-group">

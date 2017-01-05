@@ -36,4 +36,10 @@ export class RsvpService extends BaseService {
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
+
+	editRsvp(rsvp: Rsvp) : Observable<Status> {
+		return(this.http.put(this.rsvpUrl, rsvp)
+			.map(this.extractMessage)
+			.catch(this.handleError));
+	}
 }

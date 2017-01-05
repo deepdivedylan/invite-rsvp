@@ -12,6 +12,7 @@ import "rxjs/add/operator/switchMap";
 })
 
 export class RsvpComponent implements OnInit {
+	alreadyRsvped : boolean = false;
 	invitee : Invitee = null;
 	rsvp : Rsvp = new Rsvp(null, null, "", "", "", 0, new Date());
 	status : Status = null;
@@ -29,6 +30,7 @@ export class RsvpComponent implements OnInit {
 				this.invitee = reply.invitee;
 				if(reply.rsvp !== null) {
 					this.rsvp = reply.rsvp;
+					this.alreadyRsvped = true;
 				} else {
 					this.rsvp.rsvpInviteeId = this.invitee.inviteeId;
 				}
@@ -38,5 +40,18 @@ export class RsvpComponent implements OnInit {
 	createRsvp() : void {
 		this.rsvpService.createRsvp(this.rsvp)
 			.subscribe(status => this.status = status);
+	}
+
+	editRsvp() : void {
+		this.rsvpService.editRsvp(this.rsvp)
+			.subscribe(status => this.status = status);
+	}
+
+	sendRsvp() : void {
+		if(this.alreadyRsvped === true) {
+			this.createRsvp();
+		} else {
+			this.editRsvp();
+		}
 	}
 }
