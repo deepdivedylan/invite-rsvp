@@ -12,7 +12,7 @@ CREATE TABLE invitee (
 	inviteeStreet1 VARCHAR(64) NOT NULL,
 	inviteeStreet2 VARCHAR(64),
 	inviteeToken CHAR(32) NOT NULL,
-	inviteeZip CHAR(10) NOT NULL,
+	inviteeZip VARCHAR(10) NOT NULL,
 	PRIMARY KEY(inviteeId)
 );
 
