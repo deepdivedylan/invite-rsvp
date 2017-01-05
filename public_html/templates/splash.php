@@ -26,6 +26,7 @@
 </table>
 <hr />
 <h2>RSVPs</h2>
+<p><em>Number of RSVPs:</em> {{ rsvpCount }}</p>
 <div class="checkbox">
 	<label for="debugCheckbox">
 		<input type="checkbox" name="debugCheckbox" id="debugCheckbox" (change)="toggleDebug();">

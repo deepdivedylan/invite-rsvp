@@ -16,6 +16,7 @@ export class SplashComponent implements OnInit {
 	private loginStatus : LoginStatus = new LoginStatus(false);
 	private invitees : Invitee[] = [];
 	private rsvps : Rsvp[] = [];
+	private rsvpCount : number = 0;
 
 	constructor(private inviteeService: InviteeService, private loginService: LoginService, private rsvpService: RsvpService, private router: Router) {}
 
@@ -39,7 +40,11 @@ export class SplashComponent implements OnInit {
 
 	getAllRsvps() : void {
 		this.rsvpService.getAllRsvps()
-			.subscribe(rsvps => this.rsvps = rsvps);
+			.subscribe(rsvps => {
+				this.rsvps = rsvps;
+				this.rsvpCount = 0;
+				this.rsvps.forEach(rsvp => this.rsvpCount = this.rsvpCount + rsvp.rsvpNumPeople);
+			});
 	}
 
 	toggleDebug() : void {
