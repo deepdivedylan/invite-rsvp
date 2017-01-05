@@ -42,8 +42,7 @@ export class SplashComponent implements OnInit {
 		this.rsvpService.getAllRsvps()
 			.subscribe(rsvps => {
 				this.rsvps = rsvps;
-				this.rsvpCount = 0;
-				this.rsvps.forEach(rsvp => this.rsvpCount = this.rsvpCount + rsvp.rsvpNumPeople);
+				this.rsvpCount = this.rsvps.reduce((count, rsvp) => count + rsvp.rsvpNumPeople, 0);
 			});
 	}
 
