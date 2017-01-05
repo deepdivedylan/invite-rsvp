@@ -13,7 +13,9 @@ import {RsvpService} from "../services/rsvp-service";
 
 export class SplashComponent implements OnInit {
 	private displayDebug : boolean = false;
+	private displayForm : boolean = false;
 	private loginStatus : LoginStatus = new LoginStatus(false);
+	private invitee : Invitee = new Invitee(null, "", "", "", "", "", "", "", "", "");
 	private invitees : Invitee[] = [];
 	private rsvps : Rsvp[] = [];
 	private rsvpCount : number = 0;
@@ -52,5 +54,9 @@ export class SplashComponent implements OnInit {
 
 	toggleDebug() : void {
 		this.displayDebug = !this.displayDebug;
+	}
+
+	toggleForm() : void {
+		this.displayForm = !this.displayForm;
 	}
 }
