@@ -128,7 +128,8 @@
 			<p *ngIf="inviteeZip.errors?.required">ZIP code is required.</p>
 		</div>
 	</div>
-	<pre>{{ invitee | json }}</pre>
+	<button class="btn btn-lg btn-info" type="submit" [disabled]="inviteeForm.invalid"><i class="fa fa-check"></i>&nbsp;Add Invitee</button>
+	<button class="btn btn-lg btn-warning" type="reset"><i class="fa fa-ban"></i>&nbsp;Reset</button>
 </form>
 <table class="table table-bordered table-responsive table-striped">
 	<tr>
