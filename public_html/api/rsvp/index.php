@@ -98,15 +98,17 @@ try {
 		if($method === "POST") {
 			$rsvp = new Rsvp(null, $invitee->getInviteeId(), $_SERVER["HTTP_USER_AGENT"], $requestObject->rsvpComment, $_SERVER["REMOTE_ADDR"], $requestObject->rsvpNumPeople, null);
 			$rsvp->insert($pdo);
+			$reply->message = "Rsvp created OK";
 			// update the rsvp and update it in the database
 		} else {
-			$rsvp = Rsvp::getRvspByRsvpId($pdo, $requestObject->rsvpId);
+			$rsvp = Rsvp::getRsvpByRsvpId($pdo, $requestObject->rsvpId);
 			if($rsvp === null) {
 				throw(new \InvalidArgumentException("RSVP not found", 404));
 			}
 			$rsvp->setRsvpComment($requestObject->rsvpComment);
 			$rsvp->setRsvpNumPeople($requestObject->rsvpNumPeople);
 			$rsvp->update($pdo);
+			$reply->message = "Rsvp updated OK";
 		}
 
 		// send the invitee an Email, if one was entered
@@ -136,9 +138,6 @@ try {
 				throw(new RuntimeException("unable to send email"));
 			}
 		}
-
-		// update reply
-		$reply->message = "Rsvp created OK";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
