@@ -54,7 +54,7 @@ try {
 		setXsrfCookie();
 
 		// verify there's an admin logged in
-		if(emtpy($_SESSION["login"]) === true) {
+		if(empty($_SESSION["login"]) === true) {
 			throw(new InvalidArgumentException("not logged in", 401));
 		}
 
