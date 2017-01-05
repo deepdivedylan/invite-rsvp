@@ -68,7 +68,7 @@ try {
 			$rsvps = Rsvp::getAllRsvps($pdo)->toArray();
 			$reply->data = $rsvps;
 		}
-	} else if($method === "POST") {
+	} else if($method === "POST" || $method === "PUT") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
@@ -95,8 +95,19 @@ try {
 		}
 
 		// create new rsvp and insert into the database
-		$rsvp = new Rsvp(null, $invitee->getInviteeId(), $_SERVER["HTTP_USER_AGENT"], $requestObject->rsvpComment, $_SERVER["REMOTE_ADDR"], $requestObject->rsvpNumPeople, null);
-		$rsvp->insert($pdo);
+		if($method === "POST") {
+			$rsvp = new Rsvp(null, $invitee->getInviteeId(), $_SERVER["HTTP_USER_AGENT"], $requestObject->rsvpComment, $_SERVER["REMOTE_ADDR"], $requestObject->rsvpNumPeople, null);
+			$rsvp->insert($pdo);
+			// update the rsvp and update it in the database
+		} else {
+			$rsvp = Rsvp::getRvspByRsvpId($pdo, $requestObject->rsvpId);
+			if($rsvp === null) {
+				throw(new \InvalidArgumentException("RSVP not found", 404));
+			}
+			$rsvp->setRsvpComment($requestObject->rsvpComment);
+			$rsvp->setRsvpNumPeople($requestObject->rsvpNumPeople);
+			$rsvp->update($pdo);
+		}
 
 		// send the invitee an Email, if one was entered
 		if($invitee->getInviteeEmail() !== null) {
