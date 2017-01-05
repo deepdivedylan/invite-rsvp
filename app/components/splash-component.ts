@@ -47,6 +47,10 @@ export class SplashComponent implements OnInit {
 			});
 	}
 
+	getRsvpInvitee(rsvpInviteeId : number) : Invitee {
+		return(this.invitees.filter(invitee => invitee.inviteeId === rsvpInviteeId).shift());
+	}
+
 	toggleDebug() : void {
 		this.displayDebug = !this.displayDebug;
 	}

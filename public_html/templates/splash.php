@@ -36,7 +36,7 @@
 <table class="table table-bordered table-responsive table-striped">
 	<tr>
 		<th>RSVP ID</th>
-		<th>RSVP Invitee ID</th>
+		<th>RSVP Invitee Name</th>
 		<th>RSVP Comment</th>
 		<th>RSVP Number of People</th>
 		<th>RSVP Timestamp</th>
@@ -45,7 +45,7 @@
 	</tr>
 	<tr *ngFor="let rsvp of rsvps">
 		<td>{{ rsvp.rsvpId }}</td>
-		<td>{{ rsvp.rsvpInviteeId }}</td>
+		<td>{{ getRsvpInvitee(rsvp.rsvpInviteeId).inviteeName }}</td>
 		<td>{{ rsvp.rsvpComment }}</td>
 		<td>{{ rsvp.rsvpNumPeople }}</td>
 		<td>{{ rsvp.rsvpTimestamp | date : "medium" }}</td>
