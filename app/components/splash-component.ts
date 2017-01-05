@@ -4,6 +4,8 @@ import {Invitee} from "../classes/invitee";
 import {InviteeService} from "../services/invitee-service";
 import {LoginStatus} from "../classes/login-status";
 import {LoginService} from "../services/login-service";
+import {Rsvp} from "../classes/rsvp";
+import {RsvpService} from "../services/rsvp-service";
 
 @Component({
 	templateUrl: "./templates/splash.php"
@@ -12,8 +14,9 @@ import {LoginService} from "../services/login-service";
 export class SplashComponent implements OnInit {
 	private loginStatus : LoginStatus = new LoginStatus(false);
 	private invitees : Invitee[] = [];
+	private rsvps : Rsvp[] = [];
 
-	constructor(private inviteeService: InviteeService, private loginService: LoginService, private router: Router) {}
+	constructor(private inviteeService: InviteeService, private loginService: LoginService, private rsvpService: RsvpService, private router: Router) {}
 
 	ngOnInit() : void {
 		this.loginService.isLoggedIn()
@@ -23,6 +26,7 @@ export class SplashComponent implements OnInit {
 					this.router.navigate(["/login"]);
 				} else {
 					this.getAllInvitees();
+					this.getAllRsvps();
 				}
 			});
 	}
@@ -30,5 +34,10 @@ export class SplashComponent implements OnInit {
 	getAllInvitees() : void {
 		this.inviteeService.getAllInvitees()
 			.subscribe(invitees => this.invitees = invitees);
+	}
+
+	getAllRsvps() : void {
+		this.rsvpService.getAllRsvps()
+			.subscribe(rsvps => this.rsvps = rsvps);
 	}
 }

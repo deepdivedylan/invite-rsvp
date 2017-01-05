@@ -24,3 +24,25 @@
 		<td>{{ invitee.inviteeCountry }}</td>
 	</tr>
 </table>
+<hr />
+<h2>RSVPs</h2>
+<table class="table table-bordered table-responsive table-striped table-word-wrap">
+	<tr>
+		<th>RSVP ID</th>
+		<th>RSVP Invitee ID</th>
+		<th>RSVP Comment</th>
+		<th>RSVP Number of People</th>
+		<th>RSVP Timestamp</th>
+		<th>RSVP Browser</th>
+		<th>RSVP IP Address</th>
+	</tr>
+	<tr *ngFor="let rsvp of rsvps">
+		<td>{{ rsvp.rsvpId }}</td>
+		<td>{{ rsvp.rsvpInviteeId }}</td>
+		<td>{{ rsvp.rsvpComment }}</td>
+		<td>{{ rsvp.rsvpNumPeople }}</td>
+		<td>{{ rsvp.rsvpTimestamp }}</td>
+		<td>{{ rsvp.rsvpBrowser }}</td>
+		<td>{{ rsvp.rsvpIpAddress }}</td>
+	</tr>
+</table>
