@@ -12,6 +12,7 @@ import {RsvpService} from "../services/rsvp-service";
 })
 
 export class SplashComponent implements OnInit {
+	private displayDebug : boolean = false;
 	private loginStatus : LoginStatus = new LoginStatus(false);
 	private invitees : Invitee[] = [];
 	private rsvps : Rsvp[] = [];
@@ -39,5 +40,9 @@ export class SplashComponent implements OnInit {
 	getAllRsvps() : void {
 		this.rsvpService.getAllRsvps()
 			.subscribe(rsvps => this.rsvps = rsvps);
+	}
+
+	toggleDebug() : void {
+		this.displayDebug = !this.displayDebug;
 	}
 }

@@ -26,6 +26,12 @@
 </table>
 <hr />
 <h2>RSVPs</h2>
+<div class="checkbox">
+	<label for="debugCheckbox">
+		<input type="checkbox" name="debugCheckbox" id="debugCheckbox" (change)="toggleDebug();">
+		Display Debug Information
+	</label>
+</div>
 <table class="table table-bordered table-responsive table-striped table-word-wrap">
 	<tr>
 		<th>RSVP ID</th>
@@ -33,8 +39,8 @@
 		<th>RSVP Comment</th>
 		<th>RSVP Number of People</th>
 		<th>RSVP Timestamp</th>
-		<th>RSVP Browser</th>
-		<th>RSVP IP Address</th>
+		<th *ngIf="displayDebug">RSVP Browser</th>
+		<th *ngIf="displayDebug">RSVP IP Address</th>
 	</tr>
 	<tr *ngFor="let rsvp of rsvps">
 		<td>{{ rsvp.rsvpId }}</td>
@@ -42,7 +48,7 @@
 		<td>{{ rsvp.rsvpComment }}</td>
 		<td>{{ rsvp.rsvpNumPeople }}</td>
 		<td>{{ rsvp.rsvpTimestamp }}</td>
-		<td>{{ rsvp.rsvpBrowser }}</td>
-		<td>{{ rsvp.rsvpIpAddress }}</td>
+		<td *ngIf="displayDebug">{{ rsvp.rsvpBrowser }}</td>
+		<td *ngIf="displayDebug">{{ rsvp.rsvpIpAddress }}</td>
 	</tr>
 </table>
