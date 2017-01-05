@@ -92,6 +92,42 @@
 			<input type="radio" name="inviteeCountry" value="US" [(ngModel)]="invitee.inviteeCountry"> <img class="flag" src="images/US.svg" alt="" /> United States
 		</label>
 	</div>
+	<div *ngIf="invitee.inviteeCountry !== 'US'" class="form-group" [ngClass]="{ 'has-error': inviteeState.touched && inviteeState.invalid }">
+		<label for="inviteeState">Invitee State</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-map" aria-hidden="true"></i>
+			</div>
+			<input type="text" id="inviteeState" name="inviteeState" placeholder="Invitee State" class="form-control" maxlength="32" [(ngModel)]="invitee.inviteeState" #inviteeState="ngModel" required />
+		</div>
+		<div [hidden]="inviteeState.valid || inviteeState.pristine" class="alert alert-danger" role="alert">
+			<p *ngIf="inviteeState.errors?.maxlength">State cannot be more than 32 characters.</p>
+			<p *ngIf="inviteeState.errors?.required">State is required.</p>
+		</div>
+	</div>
+	<div *ngIf="invitee.inviteeCountry === 'US'" class="form-group" [ngClass]="{ 'has-error': inviteeState.touched && inviteeState.invalid }">
+		<label for="inviteeState">Invitee State</label>
+		<select id="inviteeState" name="inviteeState" class="form-control" [(ngModel)]="invitee.inviteeState" #inviteeState="ngModel" required>
+			<option *ngFor="let state of states" [value]="state.stateAbbreviation">{{ state.stateName }}</option>
+		</select>
+		<div [hidden]="inviteeState.valid || inviteeState.pristine" class="alert alert-danger" role="alert">
+			<p *ngIf="inviteeState.errors?.maxlength">State cannot be more than 32 characters.</p>
+			<p *ngIf="inviteeState.errors?.required">State is required.</p>
+		</div>
+	</div>
+	<div class="form-group" [ngClass]="{ 'has-error': inviteeZip.touched && inviteeZip.invalid }">
+		<label for="inviteeZip">Invitee ZIP Code</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-user" aria-hidden="true"></i>
+			</div>
+			<input type="text" id="inviteeZip" name="inviteeZip" placeholder="Invitee ZIP Code" class="form-control" maxlength="64" [(ngModel)]="invitee.inviteeZip" #inviteeZip="ngModel" required />
+		</div>
+		<div [hidden]="inviteeZip.valid || inviteeZip.pristine" class="alert alert-danger" role="alert">
+			<p *ngIf="inviteeZip.errors?.maxlength">ZIP code cannot be more than 10 characters.</p>
+			<p *ngIf="inviteeZip.errors?.required">ZIP code is required.</p>
+		</div>
+	</div>
 	<pre>{{ invitee | json }}</pre>
 </form>
 <table class="table table-bordered table-responsive table-striped">
