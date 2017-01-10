@@ -447,6 +447,7 @@ class Invitee implements \JsonSerializable {
 	 * @param string|null $newInviteeToken new value of invitee token
 	 * @throws \InvalidArgumentException if $newInviteeToken is not a string of hexits
 	 * @throws \RangeException if $newInviteeToken is not 32 characters
+	 * @throws \RuntimeException if QR code cannot be generated
 	 * @throws \TypeError if $newInviteeToken is not a string
 	 **/
 	public function setInviteeToken(string $newInviteeToken) {
@@ -463,6 +464,23 @@ class Invitee implements \JsonSerializable {
 
 		// store the invitee token
 		$this->inviteeToken = $newInviteeToken;
+
+		// if the QR code hasn't been generated, generate it
+		$qrFilename = dirname(__DIR__) . "/lib/qr-codes/" . $this->inviteeToken . ".png";
+		if(file_exists($qrFilename) === false) {
+			// get QR code from the Google API
+			$urlglue = urlencode((isset($_SERVER["HTTPS"]) === true ? "https://" : "http://") . $_SERVER["SERVER_NAME"] . "/rsvp/" . $this->inviteeToken);
+			if(($qrCode = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$urlglue&choe=UTF-8")) === false) {
+				throw(new \RuntimeException("unable to download QR code", 404));
+			}
+
+			// save the QR code
+			if(($qrFd = fopen($qrFilename, "wb")) === false) {
+				throw(new \RuntimeException("unable to save QR code", 403));
+			}
+			fwrite($qrFd, $qrCode);
+			fclose($qrFd);
+		}
 	}
 
 	/**
