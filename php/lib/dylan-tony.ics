@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:1.0
+BEGIN:VEVENT
+DTSTART:20170408T170000Z
+DTEND:20170408T200000Z
+LOCATION:3701 Carlisle Blvd NE, Albuquerque, NM 87110
+DESCRIPTION:Come celebrate with Dylan and Tony as they declare their love to the universe!
+SUMMARY:Dylan and Tony's Wedding
+PRIORITY:3
+END:VEVENT
+END:VCALENDAR
