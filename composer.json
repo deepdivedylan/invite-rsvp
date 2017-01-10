@@ -1,5 +1,7 @@
 {
 	"require": {
+		"setasign/fpdi-fpdf": "@stable",
+		"mpdf/mpdf": "@stable",
 		"swiftmailer/swiftmailer": "@stable"
 	}
 }
