@@ -130,6 +130,9 @@ try {
 			// now send the message
 			$swiftMessage->setBody($message, "text/html");
 			$swiftMessage->addPart(html_entity_decode($message), "text/plain");
+			if($rsvp->getRsvpNumPeople() > 0) {
+				$swiftMessage->attach(Swift_Attachment::fromPath(dirname(__DIR__, 3) . "/php/lib/dylan-tony.ics"));
+			}
 			$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
 			$mailer = Swift_Mailer::newInstance($smtp);
 			$numSent = $mailer->send($swiftMessage, $failedRecipients);
