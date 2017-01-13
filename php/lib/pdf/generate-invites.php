@@ -72,6 +72,34 @@ $inviteTemplate = <<< EOF
 </html>
 EOF;
 
+$inviteEnvelopeTemplate = <<< EOF
+<html>
+	<head>
+	<style>
+		body {
+			font-family: "FreeSans";
+		}
+		.senderAddress {
+			padding-left: 3.0in;
+		}
+	</style>
+	</head>
+	<body>
+		<p>
+			Tony Ration &amp; Dylan McDonald<br />
+			215 Lead Ave SW #1310<br />
+			Albuquerue, NM 87102
+		</p>
+		<p>&nbsp;</p>
+		<p class="senderAddress">
+			__INVITEE-NAME__<br />
+			__INVITEE-ADDRESS__<br />
+			__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__
+		</p>
+	</body>
+</html>
+EOF;
+
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/invitersvp.ini");
@@ -87,7 +115,42 @@ try {
 		$invitePdf = new mPDF("UTF-8", [139.7, 196.85]);
 		$invitePdf->WriteHTML($inviteContent);
 		$invitePdf->Output(__DIR__ . "/invites/invite-" . $invitee->getInviteeId() . ".pdf", "F");
+
+		// assemble the invite envelope
+		$inviteEnvelopeContent = str_replace("__INVITEE-NAME__", $invitee->getInviteeName(), $inviteEnvelopeTemplate);
+		$inviteEnvelopeContent = str_replace("__INVITEE-ADDRESS__", $invitee->getInviteeStreet1(), $inviteEnvelopeContent);
+		$inviteEnvelopeContent = str_replace("__INVITEE-CITY__", $invitee->getInviteeCity(), $inviteEnvelopeContent);
+		$inviteEnvelopeContent = str_replace("__INVITEE-ZIP__", $invitee->getInviteeZip(), $inviteEnvelopeContent);
+
+		// save the PDF
+		$inviteEnvelopePdf = new mPDF("UTF-8", [203.2, 146.05]);
+		$inviteEnvelopePdf->WriteHTML($inviteEnvelopeContent);
+		$inviteEnvelopePdf->Output(__DIR__ . "/invite-envelopes/invite-envelope-" . $invitee->getInviteeId() . ".pdf", "F");
 	}
+
+	// create a ZIP file with the output files
+	$zip = new \ZipArchive();
+	if(($zipStatus = $zip->open(dirname(__DIR__, 3) . "/invitersvp.zip", \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) !== true) {
+		throw(new \RuntimeException("unable to create ZIP file: $zipStatus", 500));
+	}
+
+	$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__), RecursiveIteratorIterator::SELF_FIRST);
+	foreach($files as $file) {
+		$file = str_replace("\\", "/", $file);
+		// Ignore "." and ".." folders
+		if(in_array(substr($file, strrpos($file, "/") + 1), [".", ".."]) === true) {
+			continue;
+		}
+
+		$file = realpath($file);
+		if(is_dir($file) === true) {
+			$zip->addEmptyDir(str_replace(__DIR__ . "/", "", $file . "/"));
+		}
+		else if(is_file($file) === true && substr($file, -4) === ".pdf") {
+			$zip->addFromString(str_replace(__DIR__ . "/", "", $file), file_get_contents($file));
+		}
+	}
+	$zip->close();
 } catch(Exception $exception) {
 	echo "Exception: " . $exception->getMessage() . PHP_EOL;
 } catch(TypeError $typeError) {
