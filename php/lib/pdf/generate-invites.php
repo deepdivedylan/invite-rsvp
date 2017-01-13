@@ -6,17 +6,26 @@ require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 use Io\Deepdivedylan\Invitersvp\Invitee;
 
 /**
- * formats an invitee address
+ * formats an envelope
  *
+ * @param string $envelopeTemplate envelope HTML template
  * @param Invitee $invitee invitee's address to format
- * @return string formatted address
+ * @return string formatted envelope
  **/
-function formatAddress(Invitee $invitee) : string {
-	$address = $invitee->getInviteeStreet1();
+function formatEnvelope(string $envelopeTemplate, Invitee $invitee) : string {
+	$inviteeAddress = $invitee->getInviteeStreet1();
 	if(empty($invitee->getInviteeStreet2()) === false) {
-		$address = $address .  "<br />" . PHP_EOL . $invitee->getInviteeStreet2();
+		$inviteeAddress = $inviteeAddress .  "<br />" . PHP_EOL . $invitee->getInviteeStreet2();
 	}
-	return($address);
+
+	// assemble the envelope
+	$envelopeContent = str_replace("__INVITEE-NAME__", $invitee->getInviteeName(), $envelopeTemplate);
+	$envelopeContent = str_replace("__INVITEE-ADDRESS__", $inviteeAddress, $envelopeContent);
+	$envelopeContent = str_replace("__INVITEE-CITY__", $invitee->getInviteeCity(), $envelopeContent);
+	$envelopeContent = str_replace("__INVITEE-STATE__", $invitee->getInviteeState(), $envelopeContent);
+	$envelopeContent = str_replace("__INVITEE-ZIP__", $invitee->getInviteeZip(), $envelopeContent);
+
+	return($envelopeContent);
 }
 
 $inviteTemplate = <<< EOF
@@ -141,16 +150,9 @@ try {
 		$invitePdf->WriteHTML($inviteContent);
 		$invitePdf->Output(__DIR__ . "/invites/invite-" . $invitee->getInviteeId() . ".pdf", "F");
 
-		// assemble the invite envelope
-		$inviteEnvelopeContent = str_replace("__INVITEE-NAME__", $invitee->getInviteeName(), $inviteEnvelopeTemplate);
-		$inviteEnvelopeContent = str_replace("__INVITEE-ADDRESS__", formatAddress($invitee), $inviteEnvelopeContent);
-		$inviteEnvelopeContent = str_replace("__INVITEE-CITY__", $invitee->getInviteeCity(), $inviteEnvelopeContent);
-		$inviteEnvelopeContent = str_replace("__INVITEE-STATE__", $invitee->getInviteeState(), $inviteEnvelopeContent);
-		$inviteEnvelopeContent = str_replace("__INVITEE-ZIP__", $invitee->getInviteeZip(), $inviteEnvelopeContent);
-
-		// save the PDF
+		// create and save the invitee envelope PDF
 		$inviteEnvelopePdf = new mPDF("UTF-8", [203.2, 146.05]);
-		$inviteEnvelopePdf->WriteHTML($inviteEnvelopeContent);
+		$inviteEnvelopePdf->WriteHTML(formatEnvelope($inviteEnvelopeTemplate, $invitee));
 		$inviteEnvelopePdf->Output(__DIR__ . "/invite-envelopes/invite-envelope-" . $invitee->getInviteeId() . ".pdf", "F");
 	}
 
@@ -180,5 +182,5 @@ try {
 } catch(Exception $exception) {
 	echo "Exception: " . $exception->getMessage() . PHP_EOL;
 } catch(TypeError $typeError) {
-	echo "Type Error: " . $exception->getMessage() . PHP_EOL;
+	echo "Type Error: " . $typeError->getMessage() . PHP_EOL;
 }
