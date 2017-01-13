@@ -5,6 +5,20 @@ require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 use Io\Deepdivedylan\Invitersvp\Invitee;
 
+/**
+ * formats an invitee address
+ *
+ * @param Invitee $invitee invitee's address to format
+ * @return string formatted address
+ **/
+function formatAddress(Invitee $invitee) : string {
+	$address = $invitee->getInviteeStreet1();
+	if(empty($invitee->getInviteeStreet2()) === false) {
+		$address = $address .  "<br />" . PHP_EOL . $invitee->getInviteeStreet2();
+	}
+	return($address);
+}
+
 $inviteTemplate = <<< EOF
 <html>
 	<head>
@@ -129,7 +143,7 @@ try {
 
 		// assemble the invite envelope
 		$inviteEnvelopeContent = str_replace("__INVITEE-NAME__", $invitee->getInviteeName(), $inviteEnvelopeTemplate);
-		$inviteEnvelopeContent = str_replace("__INVITEE-ADDRESS__", $invitee->getInviteeStreet1(), $inviteEnvelopeContent);
+		$inviteEnvelopeContent = str_replace("__INVITEE-ADDRESS__", formatAddress($invitee), $inviteEnvelopeContent);
 		$inviteEnvelopeContent = str_replace("__INVITEE-CITY__", $invitee->getInviteeCity(), $inviteEnvelopeContent);
 		$inviteEnvelopeContent = str_replace("__INVITEE-STATE__", $invitee->getInviteeState(), $inviteEnvelopeContent);
 		$inviteEnvelopeContent = str_replace("__INVITEE-ZIP__", $invitee->getInviteeZip(), $inviteEnvelopeContent);
