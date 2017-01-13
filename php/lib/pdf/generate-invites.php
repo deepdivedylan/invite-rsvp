@@ -171,8 +171,8 @@ $rsvpEnvelopeTemplate = <<< EOF
 			font-family: "FreeSans";
 		}
 		.inviteeAddress {
-			margin-left: 0.25in;
-			margin-top: 0.25in;
+			padding-left: 0.25in;
+			padding-top: 0.25in;
 			width: 1.5in;
 			height: 0.75in;
 		}
