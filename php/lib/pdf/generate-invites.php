@@ -107,8 +107,8 @@ $inviteEnvelopeTemplate = <<< EOF
 			margin-top: 1.5in;
 		}
 		.senderAddress {
-			margin-left: 0.125in;
-			margin-top: 0.125in;
+			padding-left: 0.25in;
+			padding-top: 0.25in;
 			width: 2.5in;
 			height: 1.5in;
 		}
