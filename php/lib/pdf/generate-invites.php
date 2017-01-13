@@ -5,7 +5,7 @@ require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 use Io\Deepdivedylan\Invitersvp\Invitee;
 
-$template = <<< EOF
+$inviteTemplate = <<< EOF
 <html>
 	<head>
 		<style>
@@ -80,13 +80,13 @@ try {
 	foreach($invitees as $invitee) {
 		// assemble the invite content
 		$urlglue = "https://invitersvp.deepdivedylan.io/rsvp/" . $invitee->getInviteeToken();
-		$inviteContent = str_replace("__INVITEE__", $invitee->getInviteeName(), $template);
+		$inviteContent = str_replace("__INVITEE__", $invitee->getInviteeName(), $inviteTemplate);
 		$inviteContent = str_replace("__URL__", $urlglue, $inviteContent);
 
 		// save the PDF
-		$mpdf = new mPDF("UTF-8", [139.7, 196.85]);
-		$mpdf->WriteHTML($inviteContent);
-		$mpdf->Output(__DIR__ . "/invites/invite-" . $invitee->getInviteeId() . ".pdf", "F");
+		$invitePdf = new mPDF("UTF-8", [139.7, 196.85]);
+		$invitePdf->WriteHTML($inviteContent);
+		$invitePdf->Output(__DIR__ . "/invites/invite-" . $invitee->getInviteeId() . ".pdf", "F");
 	}
 } catch(Exception $exception) {
 	echo "Exception: " . $exception->getMessage() . PHP_EOL;
