@@ -96,7 +96,7 @@ try {
 
 		// create new rsvp and insert into the database
 		if($method === "POST") {
-			$rsvp = new Rsvp(null, $invitee->getInviteeId(), $_SERVER["HTTP_USER_AGENT"], $requestObject->rsvpComment, $_SERVER["REMOTE_ADDR"], $requestObject->rsvpNumPeople, null);
+			$rsvp = new Rsvp(null, $invitee->getInviteeId(), substr($_SERVER["HTTP_USER_AGENT"], 0, 128), $requestObject->rsvpComment, $_SERVER["REMOTE_ADDR"], $requestObject->rsvpNumPeople, null);
 			$rsvp->insert($pdo);
 			$reply->message = "Rsvp created OK";
 			// update the rsvp and update it in the database
