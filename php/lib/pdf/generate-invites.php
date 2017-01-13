@@ -134,6 +134,35 @@ $inviteEnvelopeTemplate = <<< EOF
 </html>
 EOF;
 
+$rsvpTemplate = <<< EOF
+<html>
+	<head>
+	<style>
+		body {
+			font-family: "FreeSans";
+		}
+		.blank {
+			text-decoration: underline;
+		}
+		.container {
+			padding-top: 4.5in;
+			padding-left: 1.0in;
+		}
+		@page {
+			margin: 0px;
+		}
+	</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>__INVITEE__</h1>
+			<p>&#x25a2; is delighted to join you for <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> people</p>
+			<p>&#x25a2; declines with regrets</p>
+		</div>
+	</body>
+</html>
+EOF;
+
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/invitersvp.ini");
@@ -154,6 +183,14 @@ try {
 		$inviteEnvelopePdf = new mPDF("UTF-8", [203.2, 146.05]);
 		$inviteEnvelopePdf->WriteHTML(formatEnvelope($inviteEnvelopeTemplate, $invitee));
 		$inviteEnvelopePdf->Output(__DIR__ . "/invite-envelopes/invite-envelope-" . $invitee->getInviteeId() . ".pdf", "F");
+
+		// assemble the rsvp content
+		$rsvpContent = str_replace("__INVITEE__", $invitee->getInviteeName(), $rsvpTemplate);
+
+		// save the PDF
+		$rsvpPdf = new mPDF("UTF-8", [120.65, 171.45]);
+		$rsvpPdf->WriteHTML($rsvpContent);
+		$rsvpPdf->Output(__DIR__ . "/rsvps/rsvp-" . $invitee->getInviteeId() . ".pdf", "F");
 	}
 
 	// create a ZIP file with the output files
