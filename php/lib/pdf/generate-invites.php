@@ -63,7 +63,7 @@ $inviteTemplate = <<< EOF
 			<p>
 				First Unitarian Church<br />
 				3701 Carlisle Boulevard<br />
-				Albuquerue, NM
+				Albuquerque, NM
 			</p>
 		</div>
 		<pagebreak>
@@ -76,7 +76,7 @@ $inviteTemplate = <<< EOF
 				ceremony in the social hall adjacent to the sanctuary.</p>
 			<h2>Accomodations</h2>
 			<p>
-				Please call the Crowne Plaza Hotel in Albuquerue<br />
+				Please call the Crowne Plaza Hotel in Albuquerque<br />
 				and ask for the McDonald-Ration discounted room rate.<br />
 				Or visit http://bit.ly/TonyDylanHotel</p>
 			<h2>Registry</h2>
@@ -122,7 +122,7 @@ $inviteEnvelopeTemplate = <<< EOF
 			<p class="senderAddress">
 				Tony Ration &amp; Dylan McDonald<br />
 				215 Lead Ave SW #1310<br />
-				Albuquerue, NM 87102
+				Albuquerque, NM 87102
 			</p>
 			<p class="inviteeAddress">
 				__INVITEE-NAME__<br />
@@ -163,6 +163,45 @@ $rsvpTemplate = <<< EOF
 </html>
 EOF;
 
+$rsvpEnvelopeTemplate = <<< EOF
+<html>
+	<head>
+	<style>
+		body {
+			font-family: "FreeSans";
+		}
+		.inviteeAddress {
+			margin-left: 0.125in;
+			margin-top: 0.125in;
+			width: 1.5in;
+			height: 0.75in;
+		}
+		.senderAddress {
+			margin-left: 2.0in;
+			margin-top: 0.75in;
+		}
+		@page {
+			margin: 0px;
+		}
+	</style>
+	</head>
+	<body>
+		<div>
+			<p class="inviteeAddress">
+				__INVITEE-NAME__<br />
+				__INVITEE-ADDRESS__<br />
+				__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__
+			</p>
+			<p class="senderAddress">
+				Tony Ration &amp; Dylan McDonald<br />
+				215 Lead Ave SW #1310<br />
+				Albuquerque, NM 87102
+			</p>
+		</div>
+	</body>
+</html>
+EOF;
+
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/invitersvp.ini");
@@ -191,6 +230,11 @@ try {
 		$rsvpPdf = new mPDF("UTF-8", [120.65, 171.45]);
 		$rsvpPdf->WriteHTML($rsvpContent);
 		$rsvpPdf->Output(__DIR__ . "/rsvps/rsvp-" . $invitee->getInviteeId() . ".pdf", "F");
+
+		// create and save the invitee envelope PDF
+		$rsvpEnvelopePdf = new mPDF("UTF-8", [127, 88.9]);
+		$rsvpEnvelopePdf->WriteHTML(formatEnvelope($rsvpEnvelopeTemplate, $invitee));
+		$rsvpEnvelopePdf->Output(__DIR__ . "/rsvp-envelopes/rsvp-envelope-" . $invitee->getInviteeId() . ".pdf", "F");
 	}
 
 	// create a ZIP file with the output files
