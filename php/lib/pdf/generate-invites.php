@@ -79,23 +79,34 @@ $inviteEnvelopeTemplate = <<< EOF
 		body {
 			font-family: "FreeSans";
 		}
+		.inviteeAddress {
+			margin-left: 3.0in;
+			margin-top: 1.5in;
+		}
 		.senderAddress {
-			padding-left: 3.0in;
+			margin-left: 0.125in;
+			margin-top: 0.125in;
+			width: 2.5in;
+			height: 1.5in;
+		}
+		@page {
+			margin: 0px;
 		}
 	</style>
 	</head>
 	<body>
-		<p>
-			Tony Ration &amp; Dylan McDonald<br />
-			215 Lead Ave SW #1310<br />
-			Albuquerue, NM 87102
-		</p>
-		<p>&nbsp;</p>
-		<p class="senderAddress">
-			__INVITEE-NAME__<br />
-			__INVITEE-ADDRESS__<br />
-			__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__
-		</p>
+		<div>
+			<p class="senderAddress">
+				Tony Ration &amp; Dylan McDonald<br />
+				215 Lead Ave SW #1310<br />
+				Albuquerue, NM 87102
+			</p>
+			<p class="inviteeAddress">
+				__INVITEE-NAME__<br />
+				__INVITEE-ADDRESS__<br />
+				__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__
+			</p>
+		</div>
 	</body>
 </html>
 EOF;
@@ -120,6 +131,7 @@ try {
 		$inviteEnvelopeContent = str_replace("__INVITEE-NAME__", $invitee->getInviteeName(), $inviteEnvelopeTemplate);
 		$inviteEnvelopeContent = str_replace("__INVITEE-ADDRESS__", $invitee->getInviteeStreet1(), $inviteEnvelopeContent);
 		$inviteEnvelopeContent = str_replace("__INVITEE-CITY__", $invitee->getInviteeCity(), $inviteEnvelopeContent);
+		$inviteEnvelopeContent = str_replace("__INVITEE-STATE__", $invitee->getInviteeState(), $inviteEnvelopeContent);
 		$inviteEnvelopeContent = str_replace("__INVITEE-ZIP__", $invitee->getInviteeZip(), $inviteEnvelopeContent);
 
 		// save the PDF
