@@ -200,7 +200,8 @@ $rsvpEnvelopeTemplate = <<< EOF
 			<p class="inviteeAddress">
 				__INVITEE-NAME__<br />
 				__INVITEE-ADDRESS__<br />
-				__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__
+				__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__<br />
+				__INVITEE-COUNTRY__
 			</p>
 			<p class="senderAddress">
 				Tony Ration &amp; Dylan McDonald<br />
