@@ -166,7 +166,7 @@
 		Display Debug Information
 	</label>
 </div>
-<table class="table table-bordered table-responsive table-striped">
+<table *ngIf="invitees.length > 0" class="table table-bordered table-responsive table-striped">
 	<tr>
 		<th>RSVP ID</th>
 		<th>RSVP Invitee Name</th>
