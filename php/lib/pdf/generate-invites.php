@@ -18,10 +18,19 @@ function formatEnvelope(string $envelopeTemplate, Invitee $invitee) : string {
 		$inviteeAddress = $inviteeAddress .  "<br />" . PHP_EOL . $invitee->getInviteeStreet2();
 	}
 
+	// determine intvitee country
+	$inviteeCounty = "";
+	if($invitee->getInviteeCountry() === "DE") {
+		$inviteeCounty = "Germany";
+	} else if ($invitee->getInviteeCountry() === "MX") {
+		$inviteeCounty = "M&eacute;xico";
+	}
+
 	// assemble the envelope
 	$envelopeContent = str_replace("__INVITEE-NAME__", $invitee->getInviteeName(), $envelopeTemplate);
 	$envelopeContent = str_replace("__INVITEE-ADDRESS__", $inviteeAddress, $envelopeContent);
 	$envelopeContent = str_replace("__INVITEE-CITY__", $invitee->getInviteeCity(), $envelopeContent);
+	$envelopeContent = str_replace("__INVITEE-COUNTRY__", $inviteeCounty, $envelopeContent);
 	$envelopeContent = str_replace("__INVITEE-STATE__", $invitee->getInviteeState(), $envelopeContent);
 	$envelopeContent = str_replace("__INVITEE-ZIP__", $invitee->getInviteeZip(), $envelopeContent);
 
@@ -127,7 +136,8 @@ $inviteEnvelopeTemplate = <<< EOF
 			<p class="inviteeAddress">
 				__INVITEE-NAME__<br />
 				__INVITEE-ADDRESS__<br />
-				__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__
+				__INVITEE-CITY__, __INVITEE-STATE__ __INVITEE-ZIP__<br />
+				__INVITEE-COUNTRY__
 			</p>
 		</div>
 	</body>
