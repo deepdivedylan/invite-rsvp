@@ -183,11 +183,11 @@ $rsvpEnvelopeTemplate = <<< EOF
 		.inviteeAddress {
 			padding-left: 0.25in;
 			padding-top: 0.25in;
-			width: 1.5in;
+			width: 2.25in;
 			height: 0.75in;
 		}
 		.senderAddress {
-			margin-left: 2.0in;
+			margin-left: 2.5in;
 			margin-top: 0.75in;
 		}
 		@page {
