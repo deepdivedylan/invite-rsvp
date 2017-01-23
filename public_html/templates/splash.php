@@ -164,9 +164,20 @@
 	<a class="btn btn-info" (click)="toggleRsvpForm();"><i class="fa fa-user-plus"></i> Add RSVP</a>
 </div>
 <form *ngIf="displayRsvpForm" #rsvpForm="ngForm" class="form-horizontal well" name="rsvpForm" id="rsvpForm" (ngSubmit)="createRsvp();" novalidate>
-	<h1>RSVP For {{ invitee.inviteeName }}</h1>
-	<div *ngIf="alreadyRsvped" class="alert alert-info" role="alert">
-		<i class="fa fa-info" aria-hidden="true"></i> You have already RSVPed. You can edit your RSVP information here.
+	<h1>Add RSVP</h1>
+	<div class="form-group" [ngClass]="{ 'has-error': rsvpPerson.touched && rsvpPerson.invalid }">
+		<label for="rsvpPerson">RSVP Person</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-user" aria-hidden="true"></i>
+			</div>
+			<select id="rsvpPerson" name="rsvpPerson" class="form-control" [(ngModel)]="rsvp.rsvpInviteeId" #rsvpPerson="ngModel" required>
+				<option *ngFor="let rsvpInvitee of invitees" [value]="rsvpInvitee.inviteeId">{{ rsvpInvitee.inviteeName }}</option>
+			</select>
+		</div>
+		<div [hidden]="rsvpPerson.valid || rsvpPerson.pristine" class="alert alert-danger" role="alert">
+			<p *ngIf="rsvpPerson.errors?.required">RSVP person is required.</p>
+		</div>
 	</div>
 	<div class="form-group" [ngClass]="{ 'has-error': rsvpNumPeople.touched && rsvpNumPeople.invalid }">
 		<label for="rsvpNumPeople">Number of People</label>
@@ -179,12 +190,6 @@
 		<div [hidden]="rsvpNumPeople.valid || rsvpNumPeople.pristine" class="alert alert-danger" role="alert">
 			<p *ngIf="rsvpNumPeople.errors?.min">Number of people is required.</p>
 			<p *ngIf="rsvpNumPeople.errors?.required">Number of people cannot be negative.</p>
-		</div>
-		<div *ngIf="rsvp.rsvpNumPeople === 0" class="alert alert-warning" role="alert">
-			<i class="fa fa-frown-o" aria-hidden="true"></i> We're so sorry you can't join us. <i class="fa fa-frown-o" aria-hidden="true"></i>
-		</div>
-		<div *ngIf="rsvp.rsvpNumPeople > 0" class="alert alert-info" role="alert">
-			<i class="fa fa-smile-o" aria-hidden="true"></i> You are RSVPing for yourself and {{ rsvp.rsvpNumPeople - 1 }} other people. So glad you can make it! <i class="fa fa-smile-o" aria-hidden="true"></i>
 		</div>
 	</div>
 	<div class="form-group" [ngClass]="{ 'has-error': rsvpComment.touched && rsvpComment.invalid }">

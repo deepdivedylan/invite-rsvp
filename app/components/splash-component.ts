@@ -58,6 +58,17 @@ export class SplashComponent implements OnInit {
 			});
 	}
 
+	createRsvp() : void {
+		this.rsvpService.createRsvp(this.rsvp)
+			.subscribe(status => {
+				this.status = status;
+				if(this.status.status === 200) {
+					this.getAllRsvps();
+					this.rsvpForm.reset();
+				}
+			});
+	}
+
 	getAllInvitees() : void {
 		this.inviteeService.getAllInvitees()
 			.subscribe(invitees => this.invitees = invitees);
