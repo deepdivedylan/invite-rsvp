@@ -16,11 +16,15 @@ import {Status} from "../classes/status";
 export class SplashComponent implements OnInit {
 	@ViewChild("inviteeForm")
 	private inviteeForm : any = null;
+	@ViewChild("rsvpForm")
+	private rsvpForm : any = null;
 	private displayDebug : boolean = false;
-	private displayForm : boolean = false;
+	private displayInviteeForm : boolean = false;
+	private displayRsvpForm : boolean = false;
 	private loginStatus : LoginStatus = new LoginStatus(false);
 	private invitee : Invitee = new Invitee(null, null, null, null, null, null, null, null, null, null);
 	private invitees : Invitee[] = [];
+	private rsvp : Rsvp = new Rsvp(null, null, null, null, null, null, null);
 	private rsvps : Rsvp[] = [];
 	private rsvpCount : number = 0;
 	private status : Status = null;
@@ -75,7 +79,11 @@ export class SplashComponent implements OnInit {
 		this.displayDebug = !this.displayDebug;
 	}
 
-	toggleForm() : void {
-		this.displayForm = !this.displayForm;
+	toggleInviteeForm() : void {
+		this.displayInviteeForm = !this.displayInviteeForm;
+	}
+
+	toggleRsvpForm() : void {
+		this.displayRsvpForm = !this.displayRsvpForm;
 	}
 }
